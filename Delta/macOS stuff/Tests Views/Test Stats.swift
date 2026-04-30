@@ -106,9 +106,9 @@ struct TestStats: View {
             
         } .onAppear {
             
-            let truePercentageCorrect: Double = Double(testManager.allQuestionsCorrect.count / testManager.allQuestions.count)
+            let truePercentageCorrect: Double = Double(testManager.allQuestionsCorrect.count) / Double(testManager.allQuestions.count)
             
-            percentageCorrect = round(truePercentageCorrect * 10)
+            percentageCorrect = round(truePercentageCorrect * 100)
             
         }
      
