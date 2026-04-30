@@ -1,0 +1,16 @@
+//
+//  Things to do.txt
+//  Delta
+//
+//  Created by Desire on 2026-04-30.
+//
+
+here are the things that are needed to be done:
+
+//MARK: MATH RENDERING NEEDS TO BE ADDED
+//MARK: TEST RESULTS NEED TO BE ADDED
+//MARK: TESTS NEED TO BE ADDED
+
+
+
+
