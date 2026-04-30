@@ -17,6 +17,10 @@ struct TestStats: View {
     @EnvironmentObject var appState: AppManager
     
     @State private var percentageCorrect: Double = 0.0
+    @State private var totalQuestions: Int = 1
+    
+    
+    
     
     var body: some View {
         
@@ -35,7 +39,7 @@ struct TestStats: View {
                     .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.8)
                     .shadow(radius: 14)
           
-                Text("You have \(testManager.allQuestionsCorrect.count) questions correct out of \(testManager.allQuestions.count)")
+                Text("You have \(testManager.allQuestionsCorrect.count) questions correct out of \(totalQuestions)")
                     .font(.title.bold())
                     .position(x: geo.size.width / 2, y: geo.size.height * 0.4)
                 
@@ -108,7 +112,9 @@ struct TestStats: View {
             if testManager.allQuestions.isEmpty {
                 
             } else {
-                let truePercentageCorrect: Double = Double(testManager.allQuestionsCorrect.count) / Double(testManager.allQuestions.count)
+                totalQuestions = testManager.allQuestionsCorrect.count + testManager.allQuestionsWrong.count
+              
+                let truePercentageCorrect: Double = Double(testManager.allQuestionsCorrect.count) / Double(totalQuestions)
                 
                 percentageCorrect = round(truePercentageCorrect * 100)
             }
