@@ -79,7 +79,7 @@ struct TestStats: View {
                         .foregroundStyle(percentageCorrect > 50.0 ? Color.green : Color.red)
                         .padding(2)
                     
-                    Text("\(testManager.allQuestionsCorrect.count / testManager.allQuestions.count)%")
+                    Text("\(percentageCorrect)%")
                         .font(.title.bold())
                         .foregroundStyle(percentageCorrect > 50.0 ? Color.black : Color.red)
                 }
@@ -105,11 +105,13 @@ struct TestStats: View {
             }
             
         } .onAppear {
-            
-            let truePercentageCorrect: Double = Double(testManager.allQuestionsCorrect.count) / Double(testManager.allQuestions.count)
-            
-            percentageCorrect = round(truePercentageCorrect * 100)
-            
+            if testManager.allQuestions.isEmpty {
+                
+            } else {
+                let truePercentageCorrect: Double = Double(testManager.allQuestionsCorrect.count) / Double(testManager.allQuestions.count)
+                
+                percentageCorrect = round(truePercentageCorrect * 100)
+            }
         }
      
         
