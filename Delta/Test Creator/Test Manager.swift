@@ -39,12 +39,15 @@ struct Section {
      
      @Published var previousQuestion: Question? = nil
     @Published var createdTest: Bool = false
-    @Published var allowTestAlgorithm: Bool = false
-    @Published var randmizeQuestionsAtStart: Bool = false
+ 
     @Published var currentQuestionNumber: Int = 0
     @Published var currentQuestion: Question? = nil
      @Published var questionsSuggested: [Question] = []
   
+     
+     //settings:
+     @Published var allowTestAlgorithm: Bool = false
+     @Published var randmizeQuestionsAtStart: Bool = false
      @Published var correctAnswerWaitingTime: Double = 2.0
      
     var appManager: AppManager
@@ -53,6 +56,23 @@ struct Section {
         self.appManager = theAppManager
     }
     
+     
+     func wipeTestData() {
+         
+         allQuestions = []
+         stashOfAllQuestions = []
+         stashOfAllQuestionsMarks = []
+         allQuestionsWrong = []
+         allQuestionsCorrect = []
+         previousQuestion = nil
+         createdTest = false
+         currentQuestionNumber = 0
+         currentQuestion = nil
+         questionsSuggested = []
+         
+         
+         
+     }
     
     
     func createAllQuestions() {

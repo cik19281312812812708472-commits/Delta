@@ -19,7 +19,7 @@ enum appStateBlueprint {
     var helpInfo: String {
         switch self {
         case .startingScreen:
-            return "Choose either to create a Test or to create a Flashcard Set."
+            return "Click the \"Tests\" button to create a Test"
         case .Tests:
             return "."
         case .Packages:

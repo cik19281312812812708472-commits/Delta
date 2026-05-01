@@ -135,6 +135,8 @@ struct testView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: geo.size.width * 0.015)
+                        .scaleEffect(testManager.previousQuestion?.isAnswerCorrect ?? false ? 1.5 : 1.0)
+                        .animation(.spring(), value: testManager.previousQuestion?.isAnswerCorrect ?? false)
                         .foregroundStyle(.green)
                         .padding(2)
                     
@@ -174,7 +176,7 @@ struct testView: View {
                 .buttonStyle(.plain)
                 
                 
-                if isCorrectAnswerShown == true  {
+                if isCorrectAnswerShown == true && testManager.previousQuestion?.isAnswerCorrect == false {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .fill(.thinMaterial)

@@ -33,9 +33,33 @@
 		D6E16DDD2F5B833B0072A5E7 /* DeltaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeltaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D616E9A92FA3FFE500FDA862 /* Exceptions for "Delta" folder in "Delta" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Things to do.txt",
+			);
+			target = D6E16DC52F5B83390072A5E7 /* Delta */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		D616E9AA2FA3FFE500FDA862 /* Exceptions for "Delta" folder in "Compile Sources" phase from "Delta" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = D6E16DC22F5B83390072A5E7 /* Sources */;
+			membershipExceptions = (
+				"Things to do.txt",
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		D6E16DC82F5B83390072A5E7 /* Delta */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D616E9A92FA3FFE500FDA862 /* Exceptions for "Delta" folder in "Delta" target */,
+				D616E9AA2FA3FFE500FDA862 /* Exceptions for "Delta" folder in "Compile Sources" phase from "Delta" target */,
+			);
 			path = Delta;
 			sourceTree = "<group>";
 		};

@@ -294,10 +294,13 @@ class EnglishLitTerm: Package {
         
         var questions: [Question] = []
         
-        for i in 0..<numberOfQuestionsPerSection {
+        var i = 1
+        while i < numberOfQuestionsPerSection {
             questions.append(createQuestion())
-            
+            i += 1
         }
+        
+        
             
         return questions
     }

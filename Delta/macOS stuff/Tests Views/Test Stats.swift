@@ -39,7 +39,9 @@ struct TestStats: View {
                     .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.8)
                     .shadow(radius: 14)
           
-                Text("You have \(testManager.allQuestionsCorrect.count) questions correct out of \(totalQuestions)")
+                
+            
+                Text("You have \(testManager.allQuestionsCorrect.count) \(testManager.allQuestionsCorrect.count > 1 ?  "questions" : "question") correct out of \(totalQuestions)")
                     .font(.title.bold())
                     .position(x: geo.size.width / 2, y: geo.size.height * 0.4)
                 
@@ -93,7 +95,7 @@ struct TestStats: View {
                 Button {
                     
                     
-                    testManager.allQuestions.removeAll()
+                    testManager.wipeTestData()
                     
                     appState.testState = .selectingPackages
                     appState.appState = .startingScreen
