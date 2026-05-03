@@ -267,12 +267,6 @@ class EnglishLitTerm: Package {
     
     
     
-    struct lightQuestion {
-        
-        var questionWords: String
-        var answer: String
-        
-    }
     
     var packageDescription: String = "This package will create questions on the definitions on English Literary Terms the same ones given here: https://docs.google.com/document/d/1B-4kjahK83LZ1aj2HCqrFVruTDCtU2S1qECsInZdLKM/edit?authuser=0&usp=classroom_web"
     @Published var allChangbleBools: [boolSetting] = []

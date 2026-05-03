@@ -28,6 +28,7 @@ struct PackageButton: View {
     @State private var allChangeableInts: [intSetting] = []
     @State private var allChangeableDoubles: [doubleSetting] = []
     
+    var idealBlack = Color(red: 11/255,green: 13/255, blue: 43/255)
     
     var body: some View {
         
@@ -58,7 +59,7 @@ struct PackageButton: View {
                         .fill(Color(red: 0.8, green: 0.8, blue: 0.8, opacity: 1.0))
                         .overlay {
                             RoundedRectangle(cornerRadius: 12)
-                                .fill(Color(red: 245/255, green: 242/255, blue: 240/255))
+                                .fill(colorScheme == .light ?  Color(red: 245/255, green: 242/255, blue: 240/255) : idealBlack)
                                 .stroke(testManager.packagesSelected.contains(package.id) == true ? Color.accentColor : Color.white, lineWidth: testManager.packagesSelected.contains(package.id) == true ? 2 : 1)
                         }
                         .shadow(color: colorScheme == .light ? .black.opacity(0.1) : .white.opacity(0.1), radius: 8, x: 1, y: 1)

@@ -27,6 +27,7 @@ struct PackageSelection: View {
     
     
     var idealWhite: Color = Color(red: 240/255, green: 240/255, blue: 240/255)
+    var idealBlack = Color(red: 11/255,green: 13/255, blue: 43/255)
     var idealShadowOpacity: Double = 0.3
     
     
@@ -75,7 +76,7 @@ struct PackageSelection: View {
                         .fontWeight(.black)
                     
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(.black.opacity(0.7))
+                        .fill(colorScheme == .light ? .black.opacity(0.7) : .white.opacity(0.7))
                         .frame(height: 2)
                     
                     
@@ -103,7 +104,7 @@ struct PackageSelection: View {
                         .fontWeight(.black)
                     
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(.black.opacity(0.7))
+                        .fill(colorScheme == .light ? .black.opacity(0.7) : .white.opacity(0.7))
                         .frame(height: 2)
                     
                     
@@ -156,7 +157,7 @@ struct PackageSelection: View {
                         .toggleStyle(.switch)
                         .background(
                             RoundedRectangle(cornerRadius: 12)
-                                .fill(colorScheme == .light ? idealWhite: .black)
+                                .fill(colorScheme == .light ? idealWhite: idealBlack)
                                 .frame(width: geo.size.width * 0.11, height: geo.size.height * 0.03)
                         )
                         .shadow(color: Color.black.opacity(idealShadowOpacity), radius: 10, x: 1, y: 1)
@@ -182,7 +183,7 @@ struct PackageSelection: View {
                             HStack {
                                 
                                 RoundedRectangle(cornerRadius: 12)
-                                    .fill(colorScheme == .light ? idealWhite: .black)
+                                    .fill(colorScheme == .light ? idealWhite: idealBlack)
                                     .frame(width: geo.size.width * 0.13, height: geo.size.height * 0.03)
                                     
                             }
@@ -239,14 +240,15 @@ struct PackageSelection: View {
                                     .fontWeight(.black)
                             } else {
                                 RoundedRectangle(cornerRadius: 14)
-                                    .fill(colorScheme == .light ? Color.red : Color.blue)
-                                    .stroke(colorScheme == .light ? Color.yellow : Color.blue, lineWidth: 2)
+                                    .fill(colorScheme == .light ? Color.red : Color.white)
+                                    .stroke(colorScheme == .light ? Color.yellow : Color.white, lineWidth: 2)
                                 
                                     .shadow(radius: 10)
                                 
                                 Text("No Packages/Questions")
                                     .font(.system(size: 20))
                                     .fontWeight(.black)
+                                    .foregroundStyle(colorScheme == .light ? .black : .red)
                             }
                         }
                     }
@@ -256,7 +258,7 @@ struct PackageSelection: View {
                     ZStack {
                         
                         RoundedRectangle(cornerRadius: 14)
-                            .fill(colorScheme == .light ? idealWhite : Color.blue)
+                            .fill(colorScheme == .light ? idealWhite : idealBlack)
                             .frame(width: geo.size.width * 0.13, height: geo.size.height * 0.03)
                             .shadow(color: Color.black.opacity(idealShadowOpacity), radius: 10, x: 1, y: 1)
                            

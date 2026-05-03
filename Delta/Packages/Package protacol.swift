@@ -119,3 +119,9 @@ struct doubleSetting: Identifiable {
     
 }
 
+struct lightQuestion {
+    
+    var questionWords: String
+    var answer: String
+    
+}

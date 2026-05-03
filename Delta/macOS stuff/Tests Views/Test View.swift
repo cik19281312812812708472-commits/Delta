@@ -20,7 +20,7 @@ struct testView: View {
     @State private var isCorrectAnswerShown: Bool = false
     
     var idealWhite: Color = Color(red: 245/255, green: 245/255, blue: 245/255)
-    
+    var idealBlack = Color(red: 11/255,green: 13/255, blue: 43/255)
     var correctAnswerWaitingTime: Double
     
     func showCorrectAnswer() {
@@ -126,7 +126,7 @@ struct testView: View {
                 
                 RoundedRectangle(cornerRadius: 100)
                     .fill(.thinMaterial)
-                    .stroke(colorScheme == .light ? idealWhite : .black, lineWidth: 2)
+                    .stroke(colorScheme == .light ? idealWhite : idealBlack, lineWidth: 2)
                     .frame(width: geo.size.width * 0.1, height: geo.size.height * 0.04)
                     .position(x: geo.size.width / 2, y: geo.size.height * 0.05)
                 
@@ -135,9 +135,9 @@ struct testView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: geo.size.width * 0.015)
-                        .scaleEffect(testManager.previousQuestion?.isAnswerCorrect ?? false ? 1.5 : 1.0)
+                        .scaleEffect(testManager.previousQuestion?.isAnswerCorrect ?? false ? 1.1 : 1.0)
                         .animation(.spring(), value: testManager.previousQuestion?.isAnswerCorrect ?? false)
-                        .foregroundStyle(.green)
+                        .foregroundStyle(testManager.previousQuestion?.isAnswerCorrect ?? false == true ? Color(red: 168/255, green: 145/255, blue: 50/255) : .green)
                         .padding(2)
                     
                     Text("\(testManager.allQuestionsCorrect.count)")
@@ -180,7 +180,7 @@ struct testView: View {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
                             .fill(.thinMaterial)
-                            .stroke(colorScheme == .light ? idealWhite : .black, lineWidth: 2)
+                            .stroke(colorScheme == .light ? idealWhite : idealBlack, lineWidth: 2)
                             
                         
                         
