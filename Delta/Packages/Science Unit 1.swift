@@ -48,8 +48,12 @@ class ScienceUnit1: Package, ObservableObject {
         for i in 0..<numberOfQuestionsMadePerSection {
             allQuestions.append(createQuestion())
         }
-        
+        questionNum = 0
         return allQuestions
+        
+        
+        
+     
     }
     
     func loadAllQuestions() -> [lightQuestion] {
@@ -83,6 +87,11 @@ class ScienceUnit1: Package, ObservableObject {
     func createQuestion() -> TestCreation.Question {
         
         let questionNum = (questionNum > loadAllQuestions().count - 1 ? 0 : questionNum)
+        
+        if self.questionNum > loadAllQuestions().count - 1 {
+            self.questionNum = 0
+        }
+        
         
         let lightQuestion = loadAllQuestions()[questionNum]
         

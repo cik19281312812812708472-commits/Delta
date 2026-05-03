@@ -177,7 +177,7 @@ struct PackageSelection: View {
                         .padding(20)
                
                     
-                    Toggle("Randomize Questions at start", isOn: $testManager.randmizeQuestionsAtStart)
+                    Toggle("Randomize Questions at start", isOn: $testManager.randomizeQuestionsAtStart)
                         .toggleStyle(.switch)
                         .background(
                             HStack {

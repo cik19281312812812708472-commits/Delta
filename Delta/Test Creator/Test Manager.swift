@@ -47,7 +47,7 @@ struct Section {
      
      //settings:
      @Published var allowTestAlgorithm: Bool = false
-     @Published var randmizeQuestionsAtStart: Bool = false
+     @Published var randomizeQuestionsAtStart: Bool = false
      @Published var correctAnswerWaitingTime: Double = 2.0
      
     var appManager: AppManager
@@ -96,7 +96,9 @@ struct Section {
             
         }
         
-        allQuestions = tempAllQuestions
+        
+        
+        allQuestions = randomizeQuestionsAtStart == true ? tempAllQuestions.shuffled() : tempAllQuestions
         
         createdTest = true 
     }
@@ -110,12 +112,7 @@ struct Section {
         stashOfAllQuestionsMarks = allQuestions.map {_ in 0}
         
         
-        if self.randmizeQuestionsAtStart == true {
-            
-            let randomizedQuestions = allQuestions.shuffled()
-            allQuestions = randomizedQuestions
-            
-        }
+    
         
         currentQuestionNumber = 0
         currentQuestion = allQuestions[currentQuestionNumber]
@@ -143,15 +140,15 @@ struct Section {
         
         
          if by > 0 {
-             if currentQuestionNumber + by < allQuestions.count - 1 {
+             if currentQuestionNumber + by <= allQuestions.count - 1 {
                  currentQuestionNumber += by
                  currentQuestion = allQuestions[currentQuestionNumber]
              } else {
                  if allowTestAlgorithm == true {
                      let suggestedQuestion = algorithmia_suggestNextQuestion()
                      allQuestions.append(suggestedQuestion)
-                     currentQuestionNumber += by
-                     currentQuestion = suggestedQuestion
+                     currentQuestionNumber = allQuestions.count - 1
+                     currentQuestion = allQuestions[currentQuestionNumber]
                  } else {
                      currentQuestion = allQuestions[0]
                      currentQuestionNumber = 0
@@ -161,7 +158,7 @@ struct Section {
              }
          } else {
              
-             if currentQuestionNumber + by > -1 {
+             if currentQuestionNumber + by >= -1 {
                  
                  
                  currentQuestionNumber += by
@@ -199,7 +196,7 @@ struct Section {
          
               let actualQuestion =  allQuestions[currentQuestionNumber]
                  if allQuestionsWrong.contains(actualQuestion) == false {
-
+                     allQuestionsCorrect.removeAll() { $0 == actualQuestion }
                      allQuestionsWrong.append(actualQuestion)
                      
                  }
@@ -209,11 +206,10 @@ struct Section {
              
               let actualQuestion =  allQuestions[currentQuestionNumber]
                  if allQuestionsCorrect.contains(actualQuestion) == false {
-
+                     allQuestionsWrong.removeAll() { $0 == actualQuestion }
                      allQuestionsCorrect.append(actualQuestion)
 
                  }
-           
          }
          //print(allQuestionsCorrect)
          
@@ -239,7 +235,7 @@ struct Section {
          
          var suggestedQuestion: Question = Question(questionText: "", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionWords)
          
-         if allQuestionsWrong.count > 1 {
+         if allQuestionsWrong.count > 0 {
              
              
              suggestedQuestion = allQuestionsWrong.randomElement()!
@@ -247,7 +243,7 @@ struct Section {
              
          } else {
              
-             suggestedQuestion = allQuestions.randomElement() ?? Question(questionText: "", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionWords)
+             suggestedQuestion = stashOfAllQuestions.randomElement()!
              
          }
          
