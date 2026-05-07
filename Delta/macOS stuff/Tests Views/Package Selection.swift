@@ -49,7 +49,7 @@ struct PackageSelection: View {
                         .fontWeight(.black)
                     
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(.black.opacity(0.7))
+                        .fill(colorScheme == .light  ? .black.opacity(0.7) : .white.opacity(0.7))
                         .frame(height: 2)
                    
                     ForEach($appState.allPackages, id: \.id) { $unePackage in
@@ -61,6 +61,7 @@ struct PackageSelection: View {
                     Spacer()
                 }
                 .frame(width: geo.size.width * 0.15, height: geo.size.height * 0.9)
+                .animation(.smooth)
                 .background(
                     RoundedRectangle(cornerRadius: 12)
                     .fill(colorScheme == .light ? idealWhite : .black)
@@ -88,6 +89,7 @@ struct PackageSelection: View {
                     Spacer()
                 }
                 .frame(width: geo.size.width * 0.6, height: geo.size.height * 0.9)
+                .animation(.smooth)
                 .background(
                     RoundedRectangle(cornerRadius: 12)
                         .fill(colorScheme == .light ? idealWhite: .black)

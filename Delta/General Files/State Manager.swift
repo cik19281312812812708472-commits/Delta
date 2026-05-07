@@ -43,7 +43,10 @@ enum testStateBlueprint {
     var helpInfo: String {
         switch self {
         case .selectingPackages:
-            return "Please right click the packages to see their settings."
+            return """
+    Please right click the packages to see their settings. You can also click to select a package. 
+    Selecting a package will make it generate it's questions. Right click the questions to remove them.
+    """
         case .testSettings:
             return ""
         case .runningTest:
@@ -60,6 +63,9 @@ enum testStateBlueprint {
 
 
 class AppManager: ObservableObject {
+    
+    
+    
     
     @Published var isLoading: Bool = false
     @Published var appState: appStateBlueprint = .startingScreen

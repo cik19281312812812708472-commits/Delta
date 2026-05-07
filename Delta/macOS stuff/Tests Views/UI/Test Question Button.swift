@@ -15,6 +15,7 @@ struct TestQuestionButton: View {
     var question: Question
     @State private var popOverShown: Bool = false
     @Environment(\.colorScheme) var colorScheme
+    @EnvironmentObject var testManager: TestManager
     
     var body: some View {
         
@@ -31,6 +32,17 @@ struct TestQuestionButton: View {
         .cornerRadius(14)
         .shadow(radius: 14)
         
+        .contextMenu() {
+            Button("Remove Question") {
+                testManager.removeQuestion(question, removeAll: false)
+            }
+            Button("Remove all of this Question") {
+                testManager.removeQuestion(question, removeAll: true)
+            }
+  
+                Text("This removes every question that is this question")
+            
+        }
         .popover(isPresented: $popOverShown) {
             
             GeometryReader { popOverGeo in

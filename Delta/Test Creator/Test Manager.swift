@@ -20,7 +20,7 @@ struct Section {
     
 }
 
-
+//MARK: ADD QUESTION TYPE ID
  class TestManager: ObservableObject {
     
     @Published var packagesSelected: [UUID] = []
@@ -74,7 +74,24 @@ struct Section {
          
      }
     
-    
+     func removeQuestion(_ question: Question, removeAll: Bool) {
+         
+         if removeAll == true {
+             allQuestions.removeAll() {
+                 
+                 $0.questionText == question.questionText &&
+                 $0.questionType == question.questionType &&
+                 $0.questionContentSizeX == question.questionContentSizeX &&
+                 $0.questionContentSizeY == question.questionContentSizeY
+                
+             }
+         } else {
+             allQuestions.removeAll() { $0.id == question.id}
+         }
+         
+     }
+     
+     
     func createAllQuestions() {
         
         var actualPackagesSelected: [any Package] = []
@@ -158,7 +175,7 @@ struct Section {
              }
          } else {
              
-             if currentQuestionNumber + by >= -1 {
+             if currentQuestionNumber + by >= 0 {
                  
                  
                  currentQuestionNumber += by

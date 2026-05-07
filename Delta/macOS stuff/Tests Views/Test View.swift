@@ -21,14 +21,39 @@ struct testView: View {
     
     var idealWhite: Color = Color(red: 245/255, green: 245/255, blue: 245/255)
     var idealBlack = Color(red: 11/255,green: 13/255, blue: 43/255)
-    var correctAnswerWaitingTime: Double
+    @State private var firstNow: DispatchTime = .now()
+    @State private var correctAnswerWaitingTime: Double = 0.0
+    @State private var waitingTimeTask: Task<Void, Never>?
     
-    func showCorrectAnswer() {
+     func showCorrectAnswer() {
         isCorrectAnswerShown = true
+        // firstNow = .now()
+         
+         
+         //adjustCorrrectAnswerWatingTime()
+         
+         
+         waitingTimeTask?.cancel()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + correctAnswerWaitingTime) {
-            isCorrectAnswerShown = false
-        }
+         waitingTimeTask = Task {
+             
+             try? await Task.sleep (
+                for: .seconds(correctAnswerWaitingTime)
+             )
+             
+             guard !Task.isCancelled else { return }
+             
+             isCorrectAnswerShown = false
+             correctAnswerWaitingTime = testManager.correctAnswerWaitingTime
+         }
+         
+         
+         
+    }
+    func adjustCorrrectAnswerWatingTime() {
+        
+        let addedTime: Double = Double(DispatchTime.now().uptimeNanoseconds - firstNow.uptimeNanoseconds) / 1_000_000_000
+        correctAnswerWaitingTime += addedTime
         
     }
     
@@ -65,7 +90,7 @@ struct testView: View {
                 
                 Button {
                     testManager.changeQuestion(by: 1)
-                    
+                    correctAnswerWaitingTime =  correctAnswerWaitingTime + testManager.correctAnswerWaitingTime
                     showCorrectAnswer()
                 } label: {
                     
@@ -193,6 +218,7 @@ struct testView: View {
                         
                     }
                     .fixedSize()
+                    .animation(.smooth)
                     .position(x: geo.size.width / 2, y: geo.size.height * 0.95)
                 }
                    
@@ -200,6 +226,8 @@ struct testView: View {
                 
             }
             
+        }.onAppear {
+            correctAnswerWaitingTime = testManager.correctAnswerWaitingTime
         }
         
         

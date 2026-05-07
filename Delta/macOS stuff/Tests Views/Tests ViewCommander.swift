@@ -22,7 +22,7 @@ struct testsViewCommander: View {
         case .testSettings:
             VStack {}
         case .runningTest:
-            testView(correctAnswerWaitingTime: testManager.correctAnswerWaitingTime)
+            testView()
         case .testEnded:
             TestStats()
         }
