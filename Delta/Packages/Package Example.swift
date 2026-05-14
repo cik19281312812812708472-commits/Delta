@@ -33,7 +33,7 @@ class examplePackage: Package {
     
     @Published var allChangbleDoubles: [doubleSetting] = []
 
-    let publicName: String = "Linear System Creator"
+    let publicName: String = "example package"
     
     let internalName: String = "Example Package. Linear System Creator"
     let id = UUID()
@@ -147,7 +147,7 @@ class examplePackage: Package {
             equation2["xCof2"] = Decimal(Int.random(in: 0...higherLimit)) / Decimal(step)
             equation2["yCof2"] = Decimal(Int.random(in: 0...higherLimit)) / Decimal(step)
             
-            
+   
             
             //finding out hte answer
             
@@ -166,6 +166,7 @@ class examplePackage: Package {
             
             
         }
+        
         
         //MARK: VIEWING EQUATION
         
