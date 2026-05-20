@@ -58,7 +58,7 @@ class EuclideanGeo: Package {
     
     let internalName: String = "euclideanGeometry"
     
-    var packageDescription: String = "This package will simply create questions on definitions of Euclidean Geometry."
+    var packageDescription: String = "This package is not finnished"
     
     let id = UUID()
     
@@ -87,7 +87,7 @@ class EuclideanGeo: Package {
         let questionContent2 = QuestionContent {questionView} 
         
 
-        var result = Question(questionText: "Solve for x and y in these linear Systems", questionContent: questionContent2, questionContentSizeX: CGFloat(10), questionContentSizeY: CGFloat(10), questionAnswer: "x")
+        var result = Question(creator: self.id, questionText: "Solve for x and y in these linear Systems", questionContent: questionContent2, questionContentSizeX: CGFloat(10), questionContentSizeY: CGFloat(10), questionAnswer: "x")
         return result
        
     }

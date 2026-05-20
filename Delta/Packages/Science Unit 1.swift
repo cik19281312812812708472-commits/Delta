@@ -12,11 +12,17 @@ import Combine
 
 class ScienceUnit1: Package, ObservableObject {
     
-    var publicName: String = "Science Unit 1"
+    var publicName: String = "Science Space Unit"
     
     var internalName: String = "scienceUnit1"
     
-    var packageDescription: String = ""
+    var packageDescription: String = """
+    This is a package meant to go over the simple details of the Science Space Unit. This package will not go over more complex level 4 answers—just the easy stuff.
+    
+You can use it to see what you are lacking in.
+
+THIS PACKAGE HAS SOME MISSING QUESTIONS AND ANSWERS
+"""
     
     var id = UUID()
     
@@ -98,11 +104,20 @@ class ScienceUnit1: Package, ObservableObject {
         let questionContent = QuestionContent { AnyView (VStack {    }) }
         
         
-        let trueQuestion = Question(questionText: lightQuestion.questionWords, questionContent: questionContent, questionContentSizeX: 500, questionContentSizeY: 500, questionAnswer: lightQuestion.answer)
+        let trueQuestion = Question(creator: self.id, questionText: lightQuestion.questionWords, questionContent: questionContent, questionContentSizeX: 500, questionContentSizeY: 500, questionAnswer: lightQuestion.answer)
         
         self.questionNum += 1
         return trueQuestion
     }
+    
+    
+    func filterAnswer(answer: String) -> String {
+        
+        let newAnswer = answer.lowercased()
+       
+        return newAnswer
+    }
+    
    
     enum allQuestions: CaseIterable {
         
@@ -140,10 +155,14 @@ class ScienceUnit1: Package, ObservableObject {
         case cometDef
         case lightYearDef
         case starTemp
-        case lowMassStarDef
-        case intermediateStarDef
-        case highMassStarDef
+        case lowMassStarTime
+        case lowMassStarColour
+    
+        case intermediateStarTime
+        case intermediateStarColour
+        
         case highMassStarLifetime
+        case highMassStarColour
         case geoCentricDef
         case solarMassDef
         case hemispheresOfTheEarth
@@ -153,9 +172,10 @@ class ScienceUnit1: Package, ObservableObject {
         case sunSpotDef
         case earthPerfectForLife
         case sixeLayersOfSun
+        case allPlanets
          
         
-        
+        //add luminus object
         
         var questionWords: String {
             switch self {
@@ -197,7 +217,7 @@ class ScienceUnit1: Package, ObservableObject {
                 return "What is the definition of a star?"
             case .tiltOfEarth:
                 return "How much is the earth tilted by?"
-            case .spectraDef: //MARK: ADD SPECTRUM DEF
+            case .spectraDef:
                 return "What is a spectra?"
             case .solarSystemMnemonic:
                 return "Name a mnemonic for the solar system."
@@ -223,14 +243,18 @@ class ScienceUnit1: Package, ObservableObject {
                 return "What is the definition of a light year?"
             case .starTemp:
                 return "If a star is blue how hot is it?(answer like: cold, warm, hot, very hot)"
-            case .lowMassStarDef:
-                return "What are low mass stars?"
-            case .intermediateStarDef:
-                return "What are intermediate stars?"
-            case .highMassStarDef:
-                return "What are High mass stars?"
+            case .lowMassStarTime:
+                return "How long do low mass stars last for?"
+            case .lowMassStarColour:
+                return "What is the typical colour of a low mass star."
+            case .intermediateStarTime:
+                return "Around how long do intermediate stars last for?"
+            case .intermediateStarColour:
+                return "What is the typical colour of an intermediate star?"
             case .highMassStarLifetime:
                 return "How long do high mass stars live?"
+            case .highMassStarColour:
+                return "What is the typical colour of a high mass star."
             case .geoCentricDef:
                 return "What is the definition of geocentric?"
             case .solarMassDef:
@@ -246,9 +270,11 @@ class ScienceUnit1: Package, ObservableObject {
             case .sunSpotDef:
                 return "What are sun spots?"
             case .earthPerfectForLife:
-                return "What made earth perfecteft for liv?"
+                return "What made earth perfect for live?"
             case .sixeLayersOfSun:
-                return "what are teh six laywers of the sun?"
+                return "What are the six layers of the sun, from inside to outside?"
+            case .allPlanets:
+                return "From inside to outside what are all the planets of the solar system?"
             }
         }
         
@@ -271,11 +297,11 @@ class ScienceUnit1: Package, ObservableObject {
             case .starMass:
                 return "No, because it's mass is used to make light."
             case .fusionDef:
-                return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
+                return "The process where two light atomic nuclei collide and merge to form a single, heavier nucleus."
             case .spectroscopeDef:
                 return "A spectroscope is an instrument that separates the light of a luminous object into different wave lengths."
             case .spectroscope:
-                return "it separates the light of a luminous object into different wave lengths."
+                return "It separates the light of a luminous object into different wave lengths."
             case .smallerStarTemp:
                 return "Generally they are cooler."
             case .directionStarsTurnInTheNightSky:
@@ -295,13 +321,13 @@ class ScienceUnit1: Package, ObservableObject {
             case .spectraDef:
                 return "A spectrum but in plural."
             case .solarSystemMnemonic:
-                return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
+                return "Answers vary but should include the initials of all the planets"
             case .determiningOfAYear:
                 return "A year is determined by the revolution of the earth around the sun."
             case .fissionDef:
-                return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
+                return "This is the process of splitting the nucleus of an atom into two or more smaller, lighter nuclei."
             case .parsecDef:
-                return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
+                return "A unit of measurement that is ~3,26 light years."
             case .magnetoSphereJob:
                 return "A magnetosphere protects us from the solar wind from the sun."
             case .terrestialPlanetsDef:
@@ -309,23 +335,28 @@ class ScienceUnit1: Package, ObservableObject {
             case .solarFlaresDef:
                 return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED and fix
             case .meteorDef:
-                return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
+                return "Asteroids that enter a planets atmosphere."
             case .meteoriteDef:
-                return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
+                return "Meteors that survive reentry."
             case .cometDef:
-                return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
+                return "Icy bodies that orbit the earth"
             case .lightYearDef:
                 return "The distance that light can travel in 1 year. "
             case .starTemp:
                 return "very hot"
-            case .lowMassStarDef:
-                return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
-            case .intermediateStarDef:
-                return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
-            case .highMassStarDef:
-                return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
+            case .lowMassStarTime:
+                return "~100 billion years"
+            case .lowMassStarColour:
+                return "Red"
+            case .intermediateStarTime:
+                return "~10 billion years"
+            case .intermediateStarColour:
+                return "Orange-Yellow"
+           
             case .highMassStarLifetime:
-                return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
+                return "~10s of millions of years"
+            case .highMassStarColour:
+                return "Blue"
             case .geoCentricDef:
                 return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
             case .solarMassDef:
@@ -341,9 +372,11 @@ class ScienceUnit1: Package, ObservableObject {
             case .sunSpotDef:
                 return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
             case .earthPerfectForLife:
-                return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
+                return "Answers vary, use ai to check"
             case .sixeLayersOfSun:
-                return "//ANSWER NOT FINISHED//"//MARK: ANSWER NOT FINISHED
+                return "Inner core, radiative zone, convection zone, photosphere, chromosphere, corona."
+            case .allPlanets:
+                return ""
             }
         }
         
@@ -353,6 +386,7 @@ class ScienceUnit1: Package, ObservableObject {
             
         }
     }
+    
     
     
     

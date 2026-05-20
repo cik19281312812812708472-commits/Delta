@@ -73,7 +73,7 @@ class examplePackage: Package {
         
         let answer1 = content[2].rightSide[0].factors[0].numerator
         let answer2 = content[3].rightSide[0].factors[0].numerator
-        var result = Question(questionText: "Solve for x and y in these linear Systems", questionContent: questionContent2, questionContentSizeX: CGFloat(10), questionContentSizeY: CGFloat(10), questionAnswer: "x = \(answer1), y = \(answer2)")
+        var result = Question(creator: self.id, questionText: "Solve for x and y in these linear Systems", questionContent: questionContent2, questionContentSizeX: CGFloat(10), questionContentSizeY: CGFloat(10), questionAnswer: "x = \(answer1), y = \(answer2)")
         return result
     }
     

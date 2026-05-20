@@ -89,6 +89,11 @@ struct testView: View {
                 
                 
                 Button {
+                    
+                    
+                    
+                    
+                    testManager.filterAnswer()
                     testManager.changeQuestion(by: 1)
                     correctAnswerWaitingTime =  correctAnswerWaitingTime + testManager.correctAnswerWaitingTime
                     showCorrectAnswer()
@@ -99,6 +104,7 @@ struct testView: View {
                             .fill(.green)
                         
                         Image(systemName: "arrowshape.forward.fill")
+                            .foregroundStyle(colorScheme == .light ? .white : .black)
                     }
                 }
                 .buttonStyle(.plain)
@@ -119,6 +125,7 @@ struct testView: View {
                         
                         Image(systemName: "arrowshape.forward.fill")
                             .rotationEffect(.degrees(-180))
+                            .foregroundStyle(colorScheme == .light ? .white : .black)
                     }
                 }
                 .buttonStyle(.plain)

@@ -359,12 +359,17 @@ class EnglishLitTerm: Package {
        
         
 
-        var result = Question(questionText: "Spell the word:", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionAnswer)
+        var result = Question(creator: self.id, questionText: "Spell the word:", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionAnswer)
         return result
     }
     
     
-    
+    func filterAnswer(answer: String) -> String {
+        
+        let newAnswer = answer.lowercased()
+       
+        return newAnswer
+    }
     
     
     

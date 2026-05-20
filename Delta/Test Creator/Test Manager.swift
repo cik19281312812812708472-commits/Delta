@@ -250,7 +250,7 @@ struct Section {
          //MARK: FIX THIS
          let questionContent2 = QuestionContent { AnyView (VStack {  Text(questionWords)  }) }
          
-         var suggestedQuestion: Question = Question(questionText: "", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionWords)
+         var suggestedQuestion: Question = Question(creator: UUID(), questionText: "", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionWords)
          
          if allQuestionsWrong.count > 0 {
              

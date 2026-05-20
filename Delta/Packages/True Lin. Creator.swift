@@ -181,7 +181,7 @@ class LinearSystemCreator: Package, ObservableObject {
         )}
         //MARK: Add omitting of questions with 0 in it
         
-        finalQuestion = Question(questionText: "Solve the linear system:", questionContent: questionContent, questionContentSizeX: 500, questionContentSizeY: 500, questionAnswer: answer)
+        finalQuestion = Question(creator: self.id, questionText: "Solve the linear system:", questionContent: questionContent, questionContentSizeX: 500, questionContentSizeY: 500, questionAnswer: answer)
         
         
         
