@@ -148,7 +148,7 @@ struct PackageButton: View {
                             ForEach($allChangeableDoubles) { $setting in
                                 
                                 HStack {
-                                    TextField("Double", text: $setting.tempDoubleString)
+                                    TextField("Decimal", text: $setting.tempDoubleString)
                                         .onChange(of: setting.tempDoubleString) {_ in
                                             let tempIntString = setting.tempDoubleString
                                             setting.double = Double(tempIntString.filter {"-+0123456789".contains($0)}) ?? 0

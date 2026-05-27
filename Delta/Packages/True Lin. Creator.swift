@@ -43,6 +43,37 @@ class LinearSystemCreator: Package, ObservableObject {
         return section
     }
     
+    func filterAnswer(answer: String) -> String {
+        
+        var answerTokenized: [Character] = []
+        
+        var previousI: Character = "s"
+        for i in answer {
+            
+            if previousI == "," && i == " " {
+                
+                previousI = i
+                answerTokenized.append(" ")
+                continue
+                
+            }
+            if i == " " { continue }
+            
+            answerTokenized.append(i)
+            
+            previousI = i
+        }
+        
+        var finalAnswer: String = ""
+        
+        for character in answerTokenized {
+            finalAnswer += character.description
+        }
+        
+        return finalAnswer
+        
+    }
+    
     func createQuestion() -> Question {
         
         

@@ -46,6 +46,7 @@ struct Section {
   
      
      //settings:
+     @Published var amountofTimesAnswerCorrectToPass: Int = 3
      @Published var allowTestAlgorithm: Bool = false
      @Published var randomizeQuestionsAtStart: Bool = false
      @Published var correctAnswerWaitingTime: Double = 2.0
@@ -77,6 +78,7 @@ struct Section {
      func removeQuestion(_ question: Question, removeAll: Bool) {
          
          if removeAll == true {
+             
              allQuestions.removeAll() {
                  
                  $0.questionText == question.questionText &&
@@ -85,6 +87,7 @@ struct Section {
                  $0.questionContentSizeY == question.questionContentSizeY
                 
              }
+             
          } else {
              allQuestions.removeAll() { $0.id == question.id}
          }
@@ -144,14 +147,17 @@ struct Section {
         
         allQuestions[currentQuestionNumber].checkAnswer()
         previousQuestion = allQuestions[currentQuestionNumber]
+      
+      
+        
          
-         
-         
-         
-         algorithmia_addQuestionToWrongQuestions()
         if allowTestAlgorithm == true {
-         
+           
+            let question = allQuestions[currentQuestionNumber]
+          
             algorithmia_markQuestion(allQuestions[currentQuestionNumber])
+        } else {
+            markQuestion(allQuestions[currentQuestionNumber])
         }
      
         
@@ -182,16 +188,10 @@ struct Section {
                  currentQuestion = allQuestions[currentQuestionNumber]
                  
              } else {
-                 if allowTestAlgorithm == true {
-                     let suggestedQuestion = algorithmia_suggestNextQuestion()
-                     allQuestions.insert(suggestedQuestion, at: 0)
-                     currentQuestionNumber += by
-                     currentQuestion = suggestedQuestion
-                     
-                 } else {
+                 
                      currentQuestion = allQuestions[allQuestions.count - 1]
                      currentQuestionNumber = allQuestions.count - 1
-                 }
+                 
                  
              }
              
@@ -207,9 +207,15 @@ struct Section {
         
     }
     
+     func markQuestion(_ question: Question) {
+         if question.isAnswerCorrect == true {
+             stashOfAllQuestionsMarks[currentQuestionNumber] += 1
+         } else {
+             stashOfAllQuestionsMarks[currentQuestionNumber] -= 1
+         }
+     }
+     
      func algorithmia_addQuestionToWrongQuestions() {
-         
-         if allQuestions[currentQuestionNumber].isAnswerCorrect == false {
          
               let actualQuestion =  allQuestions[currentQuestionNumber]
                  if allQuestionsWrong.contains(actualQuestion) == false {
@@ -219,25 +225,46 @@ struct Section {
                  }
              
              
-         } else {
-             
-              let actualQuestion =  allQuestions[currentQuestionNumber]
-                 if allQuestionsCorrect.contains(actualQuestion) == false {
-                     allQuestionsWrong.removeAll() { $0 == actualQuestion }
-                     allQuestionsCorrect.append(actualQuestion)
-
-                 }
-         }
+         
          //print(allQuestionsCorrect)
          
      }
 
      func algorithmia_markQuestion(_ question: Question) {
-         
+         print("latter0:", allQuestions.count - 1 ," ", currentQuestionNumber)
          if question.isAnswerCorrect == true {
              
+             let localAmountOfTimesAnsCorrectToPass = amountofTimesAnswerCorrectToPass
+             print(localAmountOfTimesAnsCorrectToPass)
+             print("latter2:", allQuestions.count - 1 ," ", currentQuestionNumber)
+             if stashOfAllQuestionsMarks[currentQuestionNumber] > localAmountOfTimesAnsCorrectToPass {
+                 
+                 let actualQuestion =  allQuestions[currentQuestionNumber]
+                 if allQuestionsCorrect.contains(actualQuestion) == false {
+                     allQuestionsWrong.removeAll() { $0 == actualQuestion }
+                     allQuestionsCorrect.append(actualQuestion)
+                     
+                 }
+                 
+             }
+             
+             let actualQuestionNumber = currentQuestionNumber % stashOfAllQuestions.count
+             
+             stashOfAllQuestionsMarks[actualQuestionNumber] += 1
+             
+         } else {
+
+             algorithmia_addQuestionToWrongQuestions()
+    
+             
+             
+             // this is so that if the question number is greater than the amount of questions in stash of all questions wich is unchanging then it will show the actual question that the new question is refering to.
+             let actualQuestionNumber = currentQuestionNumber % stashOfAllQuestions.count
+             
+             stashOfAllQuestionsMarks[actualQuestionNumber] -= 1
+          
          }
-         
+     
          //now wer can remove it from allquestionswrong
          
          

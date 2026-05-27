@@ -26,6 +26,7 @@ struct PackageSelection: View {
     @State private var noPackageSelected: Bool = false
     ///Thise stores the packages id so we can l
     
+    @State private var tempCorrectAnswersToPass: String = "3"
     
     var idealWhite: Color = Color(red: 240/255, green: 240/255, blue: 240/255)
     var idealBlack = Color(red: 11/255,green: 13/255, blue: 43/255)
@@ -162,6 +163,11 @@ struct PackageSelection: View {
                             RoundedRectangle(cornerRadius: 12)
                                 .fill(colorScheme == .light ? idealWhite: idealBlack)
                                 .frame(width: geo.size.width * 0.11, height: geo.size.height * 0.03)
+                                .contextMenu {
+                                    Text("Help")
+                                    Divider()
+                                    Text("This algorithim is designed to find the most relevant questions for you based on your previous answers.")
+                                }
                         )
                         .shadow(color: Color.black.opacity(idealShadowOpacity), radius: 10, x: 1, y: 1)
                         .popover(isPresented: $isAlgorithmPoppedOpen) {
@@ -258,6 +264,9 @@ struct PackageSelection: View {
                     .frame(width: geo.size.width * 0.13, height: geo.size.height * 0.08)
                     .buttonStyle(.plain)
                     
+                    
+                    Spacer()
+                    
                     ZStack {
                         
                         RoundedRectangle(cornerRadius: 14)
@@ -277,9 +286,37 @@ struct PackageSelection: View {
                     }
                     .fixedSize()
                     
-                    
-                    
                     Spacer()
+                    
+                    
+                    ZStack {
+                        
+                        RoundedRectangle(cornerRadius: 14)
+                            .fill(colorScheme == .light ? idealWhite : idealBlack)
+                            .frame(width: geo.size.width * 0.13, height: geo.size.height * 0.03)
+                            .shadow(color: Color.black.opacity(idealShadowOpacity), radius: 10, x: 1, y: 1)
+                            .contextMenu {
+                                Text("This is the amount of times a set question has to be correct for it to count as correct.")
+                                Text("This is used for the algorithim and is only enabled when the algorithim is enabled.")
+                            }
+                        
+                        
+                        HStack {
+                            
+                            TextField("Integer", text: $tempCorrectAnswersToPass)
+                                .onChange(of: tempCorrectAnswersToPass) {_ in
+                                    let tempIntString = tempCorrectAnswersToPass
+                                    testManager.amountofTimesAnswerCorrectToPass = Int(Double(tempIntString.filter {"-+0123456789".contains($0)}) ?? 0)
+                                    
+                                }
+                        
+                            Text("Memory protection")
+                        }
+                        
+                    }
+                    .fixedSize()
+                   
+                    
                 }
                 .frame(width: geo.size.width * 0.15, height: geo.size.height * 0.9)
                 .background(
@@ -290,7 +327,7 @@ struct PackageSelection: View {
                 .position(x: geo.size.width * 0.73, y: geo.size.height * 0.5)
                 
                 
-                
+               
                
                 
                 
