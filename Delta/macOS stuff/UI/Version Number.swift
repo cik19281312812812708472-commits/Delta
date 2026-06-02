@@ -20,6 +20,7 @@ struct versionNumber: View {
     var contextMenuText: String = """
     This version added French Practise's omit questions.
     It also added this.
+    
     """
     
     

@@ -67,7 +67,7 @@ class AppManager: ObservableObject {
     
     
     
-    @Published var appVersion: versionData_Type = versionData_Type(Major: 0, Minor: 2, Patch: 6)
+    @Published var appVersion: versionData_Type = versionData_Type(Major: 0, Minor: 2, Patch: 7)
     @Published var isLoading: Bool = false
     @Published var appState: appStateBlueprint = .startingScreen
     //it should always set the test state to selecting packages at first

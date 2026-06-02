@@ -101,9 +101,9 @@ class FrenchPractise: Package {
             
             
             
-            guard allChangbleBools[i].bool == true else {
+            if allChangbleBools[i].bool == false {
                 section.append(allQuestions[i])
-                continue
+                
             }
             
             
