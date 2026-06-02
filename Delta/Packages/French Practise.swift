@@ -26,6 +26,7 @@ class FrenchPractise: Package {
     
     var allQuestions: [Question] = []
     var createdAllQuestions: Bool = false
+    var createdAllSettings: Bool = false
     
     func updateInternalSettings() {
         if allChangbleInts[0].int < 0 {
@@ -36,6 +37,28 @@ class FrenchPractise: Package {
     func filterAnswer(answer: String) -> String {
         return answer.lowercased()
     }
+    
+    func createRestofSettings() {
+        
+      
+            for question in allQuestions {
+                
+                let newBoolSetting = boolSetting(bool: false, name: "Ommit question \"\(question.questionText)\"")
+               // print(newBoolSetting)
+                allChangbleBools.append(newBoolSetting)
+                //print(allChangbleBools)
+            }
+          
+        
+    }
+    func setup() {
+        createAllQuestions()
+        createRestofSettings()
+    }
+    init() {
+        setup()
+    }
+    
     
     func createAllQuestions() {
         
@@ -58,9 +81,9 @@ class FrenchPractise: Package {
     
     func createSection(numOfQuestions: Int) -> [TestCreation.Question] {
         
-        if createdAllQuestions == false {
-            createAllQuestions()
-        }
+    
+        
+        
         
         var section: [Question] = []
         
@@ -76,7 +99,13 @@ class FrenchPractise: Package {
                 finishedCreatingSection = true
             }
             
-            section.append(allQuestions[i])
+            
+            
+            guard allChangbleBools[i].bool == true else {
+                section.append(allQuestions[i])
+                continue
+            }
+            
             
             i += 1
             actualIndex += 1
@@ -85,13 +114,13 @@ class FrenchPractise: Package {
         
         
         
+        
+        
+        
         return section
     }
     
     func createQuestion() -> TestCreation.Question {
-        if createdAllQuestions == false {
-            createAllQuestions()
-        }
         
         return allQuestions.randomElement()!
     }

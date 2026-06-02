@@ -51,6 +51,8 @@ struct startingScreen: View {
            QuestionInfo(geo: geo)
                 .position(x: geo.size.width * 0.95, y: geo.size.height * 0.95)
             
+            versionNumber(geo: geo)
+                .position(x: geo.size.width * 0.05, y: geo.size.height * 0.96)
             //only add the ui "dooer" if the ui is plenty
             //add reactive flash card view
             /* packages will be selected in the test selection screen each packages question ammoutn will be added into a question thing
