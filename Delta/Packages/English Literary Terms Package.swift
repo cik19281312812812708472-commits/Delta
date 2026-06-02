@@ -315,7 +315,7 @@ class EnglishLitTerm: Package {
         
         for question in allQuestions.allCases {
             
-            let newQuestion = lightQuestion(questionWords: question.questionWords, answer: question.answer)
+            let newQuestion = lightQuestion(questionWords: question.questionWords, answer: question.answer.lowercased())
             result.append(newQuestion)
         }
         
@@ -365,7 +365,7 @@ class EnglishLitTerm: Package {
     
     
     func filterAnswer(answer: String) -> String {
-        
+        //make the first letter uper
         let newAnswer = answer.lowercased()
        
         return newAnswer

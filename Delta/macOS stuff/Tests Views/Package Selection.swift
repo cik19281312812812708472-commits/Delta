@@ -26,7 +26,7 @@ struct PackageSelection: View {
     @State private var noPackageSelected: Bool = false
     ///Thise stores the packages id so we can l
     
-    @State private var tempCorrectAnswersToPass: String = "3"
+    @State private var tempCorrectAnswersToPass: String = ""
     
     var idealWhite: Color = Color(red: 240/255, green: 240/255, blue: 240/255)
     var idealBlack = Color(red: 11/255,green: 13/255, blue: 43/255)
@@ -339,6 +339,8 @@ struct PackageSelection: View {
             
             
         } .onAppear {
+            
+            tempCorrectAnswersToPass = testManager.amountofTimesAnswerCorrectToPass.description
             
             testManager.packagesNotSelected = appState.allPackages.map {$0.id}
             testManager.packagesSelected = []

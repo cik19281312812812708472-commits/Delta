@@ -74,7 +74,7 @@ class AppManager: ObservableObject {
     @Published var testState: testStateBlueprint = .selectingPackages
     
     /// in teh furture this will be loaded from a JSON as of now i will manually add them.
-    @Published var allPackages: [any Package] = [EnglishLitTerm(),  ScienceUnit1(), LinearSystemCreator(), ChemistryUnit1(), TrigonometryPackage(), PolynomialPackage(), AlgebraUnit1()
+    @Published var allPackages: [any Package] = [EnglishLitTerm(),  ScienceUnit1(), LinearSystemCreator(), ChemistryUnit1(), TrigonometryPackage(), PolynomialPackage(), AlgebraUnit1(), FrenchPractise(), NumberSetsUnit()
     
                                                  //examplePackage(), EuclideanGeo()
     ]

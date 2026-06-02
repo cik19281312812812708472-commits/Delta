@@ -46,7 +46,7 @@ struct Section {
   
      
      //settings:
-     @Published var amountofTimesAnswerCorrectToPass: Int = 3
+     @Published var amountofTimesAnswerCorrectToPass: Int = 0
      @Published var allowTestAlgorithm: Bool = false
      @Published var randomizeQuestionsAtStart: Bool = false
      @Published var correctAnswerWaitingTime: Double = 2.0
@@ -207,10 +207,21 @@ struct Section {
         
     }
     
+     func flagQuestion() {
+         
+         let actualQuestionNumber = currentQuestionNumber % stashOfAllQuestions.count
+         stashOfAllQuestionsMarks[actualQuestionNumber] -= 1
+         
+         
+     }
+     
+     
      func markQuestion(_ question: Question) {
          if question.isAnswerCorrect == true {
+             algorithmia_addQuestionToCorrectQuestions()
              stashOfAllQuestionsMarks[currentQuestionNumber] += 1
          } else {
+             algorithmia_addQuestionToWrongQuestions()
              stashOfAllQuestionsMarks[currentQuestionNumber] -= 1
          }
      }
@@ -229,28 +240,33 @@ struct Section {
          //print(allQuestionsCorrect)
          
      }
+     
+     func algorithmia_addQuestionToCorrectQuestions() {
+         let actualQuestion =  allQuestions[currentQuestionNumber]
+         if allQuestionsCorrect.contains(actualQuestion) == false {
+             allQuestionsWrong.removeAll() { $0 == actualQuestion }
+             allQuestionsCorrect.append(actualQuestion)
+             
+         }
+     }
 
      func algorithmia_markQuestion(_ question: Question) {
-         print("latter0:", allQuestions.count - 1 ," ", currentQuestionNumber)
+   
          if question.isAnswerCorrect == true {
+             let actualQuestionNumber = currentQuestionNumber % stashOfAllQuestions.count
+                          
+             stashOfAllQuestionsMarks[actualQuestionNumber] += 1
              
-             let localAmountOfTimesAnsCorrectToPass = amountofTimesAnswerCorrectToPass
-             print(localAmountOfTimesAnsCorrectToPass)
-             print("latter2:", allQuestions.count - 1 ," ", currentQuestionNumber)
-             if stashOfAllQuestionsMarks[currentQuestionNumber] > localAmountOfTimesAnsCorrectToPass {
-                 
-                 let actualQuestion =  allQuestions[currentQuestionNumber]
-                 if allQuestionsCorrect.contains(actualQuestion) == false {
-                     allQuestionsWrong.removeAll() { $0 == actualQuestion }
-                     allQuestionsCorrect.append(actualQuestion)
-                     
-                 }
+             print(stashOfAllQuestionsMarks)
+             if stashOfAllQuestionsMarks[actualQuestionNumber] > amountofTimesAnswerCorrectToPass {
+                
+                 algorithmia_addQuestionToCorrectQuestions()
                  
              }
              
-             let actualQuestionNumber = currentQuestionNumber % stashOfAllQuestions.count
+            
              
-             stashOfAllQuestionsMarks[actualQuestionNumber] += 1
+            
              
          } else {
 
@@ -259,7 +275,7 @@ struct Section {
              
              
              // this is so that if the question number is greater than the amount of questions in stash of all questions wich is unchanging then it will show the actual question that the new question is refering to.
-             let actualQuestionNumber = currentQuestionNumber % stashOfAllQuestions.count
+             let actualQuestionNumber = currentQuestionNumber % stashOfAllQuestions.count 
              
              stashOfAllQuestionsMarks[actualQuestionNumber] -= 1
           
@@ -290,7 +306,7 @@ struct Section {
              suggestedQuestion = stashOfAllQuestions.randomElement()!
              
          }
-         
+         suggestedQuestion.input = ""
          
          return suggestedQuestion
      }

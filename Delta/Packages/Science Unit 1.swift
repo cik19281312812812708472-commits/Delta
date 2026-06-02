@@ -68,7 +68,8 @@ THIS PACKAGE HAS SOME MISSING QUESTIONS AND ANSWERS
         
         for question in allQuestions.allCases {
             
-            let newQuestion = question.lightQuestion
+            var newQuestion = question.lightQuestion
+            newQuestion.answer = newQuestion.answer.lowercased()
             allQuestionsLoaded.append(newQuestion)
             
         }
@@ -110,13 +111,11 @@ THIS PACKAGE HAS SOME MISSING QUESTIONS AND ANSWERS
         return trueQuestion
     }
     
-    
     func filterAnswer(answer: String) -> String {
-        
-        let newAnswer = answer.lowercased()
-       
-        return newAnswer
+        return answer.lowercased()
     }
+    
+    
     
    
     enum allQuestions: CaseIterable {

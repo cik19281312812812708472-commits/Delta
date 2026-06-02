@@ -167,7 +167,6 @@ struct testView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: geo.size.width * 0.015)
-                        .scaleEffect(testManager.previousQuestion?.isAnswerCorrect ?? false ? 1.1 : 1.0)
                         .animation(.spring(), value: testManager.previousQuestion?.isAnswerCorrect ?? false)
                         .foregroundStyle(testManager.previousQuestion?.isAnswerCorrect ?? false == true ? Color(red: 168/255, green: 145/255, blue: 50/255) : .green)
                         .padding(2)
@@ -178,8 +177,34 @@ struct testView: View {
                 }
                 .position(x: geo.size.width * 0.465, y: geo.size.height * 0.05)
                 
-                
-                
+                Button {
+                    
+                    testManager.flagQuestion()
+                    
+                } label: {
+                    
+                    ZStack {
+                        //make a flag
+                        Circle()
+                            .fill(.red.opacity(0.7))
+                            .frame(width: geo.size.width * 0.02)
+                            .contextMenu() {
+                                Text("Flag Question")
+                                Text("This decreases the question's rating by -1. Essentially, it tells the test manager to give you this question more")
+                            }
+                        
+                        Image(systemName: "flag.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: geo.size.width * 0.008)
+                    }
+                }
+                .buttonStyle(.plain)
+                .frame(width: geo.size.width * 0.02)
+                .shadow(color: .black.opacity(0.3), radius: 3, x: 1, y: 1)
+                .position(x: geo.size.width * 0.98, y: geo.size.height * 0.97)
+               
+
                 HStack {
                     
                     Image(systemName: "xmark.circle.fill")
