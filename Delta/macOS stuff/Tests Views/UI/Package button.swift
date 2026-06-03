@@ -160,6 +160,7 @@ struct PackageButton: View {
                                 
                             }
                             
+                            Spacer()
                         }
                         
                         //close button
@@ -201,8 +202,7 @@ struct PackageButton: View {
                             //now we modify settings
                             testManager.allPackages[package.id]?.updateInternalSettings()
                             
-                            //print(testManager.allPackages[package.id]?.allChangbleBools)
-                            print(package.allChangbleBools.count)
+                            
                             isSettingsShown.toggle()
                         } label: {
                             Image(systemName: "xmark.circle")

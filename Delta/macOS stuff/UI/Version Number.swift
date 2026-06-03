@@ -18,9 +18,8 @@ struct versionNumber: View {
     @State private var versionText: String = ""
     
     var contextMenuText: String = """
-    This version added French Practise's omit questions.
-    It also added this.
-    
+    This version added French Practise's omit questions and expanded the French Practise and renamed it to French Conjugation.
+    It also added this and one bug fix with the settings for each package.
     """
     
     
@@ -33,6 +32,7 @@ struct versionNumber: View {
                 .shadow(radius: 3)
                 .contextMenu() {
                     Text(contextMenuText)
+                    Text("")
                 }
             
             
