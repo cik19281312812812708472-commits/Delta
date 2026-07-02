@@ -14,8 +14,8 @@
             filePath = "Delta/Packages/Package Example.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "184"
-            endingLineNumber = "184"
+            startingLineNumber = "188"
+            endingLineNumber = "188"
             landmarkName = "CreateLinearSystem()"
             landmarkType = "7">
          </BreakpointContent>
@@ -34,6 +34,22 @@
             endingLineNumber = "53"
             landmarkName = "changeABool(_:to:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CD194BBF-7DD7-4A10-80DC-59346955D453"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Delta/macOS stuff/Tests Views/Test Stats.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "body"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

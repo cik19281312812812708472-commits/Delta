@@ -19,7 +19,7 @@ struct PackageSelection: View {
     @Environment(\.colorScheme) var colorScheme
     
     @EnvironmentObject var testManager: TestManager
-    
+    @EnvironmentObject var generalData: GeneralData
     
     @State private var isAlgorithmPoppedOpen: Bool = false
     
@@ -57,7 +57,7 @@ struct PackageSelection: View {
                     ForEach($appState.allPackages, id: \.id) { $unePackage in
                  
                         PackageButton(geo: geo, package: unePackage)
-                  
+                           
                     }
                     
                     Spacer()
@@ -86,6 +86,7 @@ struct PackageSelection: View {
                     ForEach($testManager.allQuestions, id: \.id) { $uneQuestion in
                         
                         TestQuestionButton(question: uneQuestion)
+                            
                     }
                     
                     Spacer()
@@ -99,6 +100,8 @@ struct PackageSelection: View {
                 .shadow(color: Color.black.opacity(idealShadowOpacity), radius: 10, x: 1, y: 1)
                 .position(x: geo.size.width * 0.32, y: geo.size.height / 2)
                 
+              TestName(geo: geo)
+                .position(x: geo.size.width * 0.32, y: geo.size.height * 0.025)
                 
                 
                 ScrollView {
@@ -222,16 +225,11 @@ struct PackageSelection: View {
                             
                         } else {
                             
-
-                            
-                            
                             testManager.startTest()
                         }
                         
                         
-                        if true {
-                            
-                        }
+                        
                         
                     } label: {
                         
@@ -272,7 +270,7 @@ struct PackageSelection: View {
                         RoundedRectangle(cornerRadius: 14)
                             .fill(colorScheme == .light ? idealWhite : idealBlack)
                             .frame(width: geo.size.width * 0.13, height: geo.size.height * 0.03)
-                            .shadow(color: Color.black.opacity(idealShadowOpacity), radius: 10, x: 1, y: 1)
+                            .shadow(color: generalData.getShadowColor().opacity(generalData.idealShadowOpacity), radius: 10, x: 1, y: 1)
                            
                         
                         
@@ -294,7 +292,7 @@ struct PackageSelection: View {
                         RoundedRectangle(cornerRadius: 14)
                             .fill(colorScheme == .light ? idealWhite : idealBlack)
                             .frame(width: geo.size.width * 0.13, height: geo.size.height * 0.03)
-                            .shadow(color: Color.black.opacity(idealShadowOpacity), radius: 10, x: 1, y: 1)
+                            .shadow(color: generalData.getShadowColor().opacity(generalData.idealShadowOpacity), radius: 10, x: 1, y: 1)
                             .contextMenu {
                                 Text("This is the amount of times a set question has to be correct for it to count as correct.")
                                 Text("This is used for the algorithim and is only enabled when the algorithim is enabled.")
@@ -304,11 +302,12 @@ struct PackageSelection: View {
                         HStack {
                             
                             TextField("Integer", text: $tempCorrectAnswersToPass)
-                                .onChange(of: tempCorrectAnswersToPass) {_ in
+                                .onChange(of: tempCorrectAnswersToPass) {_, _ in
                                     let tempIntString = tempCorrectAnswersToPass
                                     testManager.amountofTimesAnswerCorrectToPass = Int(Double(tempIntString.filter {"-+0123456789".contains($0)}) ?? 0)
                                     
                                 }
+                                .frame(maxWidth: geo.size.width * 0.04)
                         
                             Text("Memory protection")
                         }
@@ -316,6 +315,14 @@ struct PackageSelection: View {
                     }
                     .fixedSize()
                    
+                    Spacer()
+                    
+                    ArchiveTestButton(geo: geo)
+                        .padding(20)
+                    
+                    Spacer()
+                    
+                    LoadTestButton(geo: geo)
                     
                 }
                 .frame(width: geo.size.width * 0.15, height: geo.size.height * 0.9)
@@ -344,10 +351,6 @@ struct PackageSelection: View {
             
             testManager.packagesNotSelected = appState.allPackages.map {$0.id}
             testManager.packagesSelected = []
-            
-            for package in appState.allPackages {
-                testManager.allPackages[package.id] = package
-            }
             
         }
         

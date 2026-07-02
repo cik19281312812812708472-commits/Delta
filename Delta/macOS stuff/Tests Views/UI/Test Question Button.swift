@@ -23,12 +23,11 @@ struct TestQuestionButton: View {
         Button {
             popOverShown.toggle()
         } label: {
- 
-            Text(question.questionText)
+            Text(question.questionName != "" ? question.questionName : question.questionText)
+                .hoverEffect(cornerRadius: 14)
         }
      
         .background(colorScheme == .light ? Color.white : Color.black)
-     
         .cornerRadius(14)
         .shadow(radius: 14)
         

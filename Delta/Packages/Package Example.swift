@@ -15,6 +15,10 @@ import Combine
 
 ///it should have this
 class examplePackage: Package {
+    func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
+        createQuestion()
+    }
+    
     
     
     func updateInternalSettings() {
@@ -56,7 +60,7 @@ class examplePackage: Package {
         
         
         let t = CreateLinearSystem()
-        var content: [mathEquationBlueprint] = t
+        let content: [mathEquationBlueprint] = t
         
        
         
@@ -73,7 +77,7 @@ class examplePackage: Package {
         
         let answer1 = content[2].rightSide[0].factors[0].numerator
         let answer2 = content[3].rightSide[0].factors[0].numerator
-        var result = Question(creator: self.id, questionText: "Solve for x and y in these linear Systems", questionContent: questionContent2, questionContentSizeX: CGFloat(10), questionContentSizeY: CGFloat(10), questionAnswer: "x = \(answer1), y = \(answer2)")
+        let result = Question(creator: self.id, questionName: "", questionText: "Solve for x and y in these linear Systems", questionContent: questionContent2, questionContentSizeX: CGFloat(10), questionContentSizeY: CGFloat(10), questionAnswer: "x = \(answer1), y = \(answer2)")
         return result
     }
     
@@ -209,10 +213,10 @@ class examplePackage: Package {
             // the second equation
             
             
-            let xCof1String2 = equation2["xCof1"]!.description
+            //let xCof1String2 = equation2["xCof1"]!.description
             
             
-            let xCof1_2 = mathEquationBlueprint.factor(topBase: xCof1String2, bottomBase: "1", squareRoot: false)
+            //let xCof1_2 = mathEquationBlueprint.factor(topBase: xCof1String2, bottomBase: "1", squareRoot: false)
             firstTerm = mathEquationBlueprint.Term(sign: .positive, factors: [xCof1, xVar])
 //MARK: make elim the pos when at hte farthest
          
@@ -231,8 +235,8 @@ class examplePackage: Package {
                 secondTerm = mathEquationBlueprint.Term(sign: .negative, factors: [yCof1_2, yVar])
             }
             
-            let rightsideString2 = equation2["equalsTo"]!.description
-            let righsideFactor2 = mathEquationBlueprint.factor(topBase: rightsideString, bottomBase: "1", squareRoot: false)
+            //let rightsideString2 = equation2["equalsTo"]!.description
+            //let righsideFactor2 = mathEquationBlueprint.factor(topBase: rightsideString, bottomBase: "1", squareRoot: false)
             let rightside2 = mathEquationBlueprint.Term(sign: .positive, factors: [righsideFactor])
             actualEquation2 = mathEquationBlueprint(leftSide: [firstTerm, secondTerm], relation: .equal, rightSide: [rightside2])
             
@@ -276,10 +280,10 @@ class examplePackage: Package {
             // the second equation
             
             
-            let xCof1String2 = equation2["xCof1"]!.description
-            let xCof2String2 = equation2["xCof2"]!.description
+            //let xCof1String2 = equation2["xCof1"]!.description
+            //let xCof2String2 = equation2["xCof2"]!.description
             
-            let xCof1_2 = mathEquationBlueprint.factor(topBase: xCof1String2, bottomBase: xCof2String2, squareRoot: false)
+            //let xCof1_2 = mathEquationBlueprint.factor(topBase: xCof1String2, bottomBase: xCof2String2, squareRoot: false)
             firstTerm = mathEquationBlueprint.Term(sign: .positive, factors: [xCof1, xVar])
 //MARK: make elim the pos when at hte farthest
          
@@ -300,8 +304,8 @@ class examplePackage: Package {
                 secondTerm = mathEquationBlueprint.Term(sign: .negative, factors: [yCof1_2, yVar])
             }
             
-            let rightsideString2 = equation2["equalsTo"]!.description
-            let righsideFactor2 = mathEquationBlueprint.factor(topBase: rightsideString, bottomBase: "1", squareRoot: false)
+            //let rightsideString2 = equation2["equalsTo"]!.description
+            //let righsideFactor2 = mathEquationBlueprint.factor(topBase: rightsideString, bottomBase: "1", squareRoot: false)
             let rightside2 = mathEquationBlueprint.Term(sign: .positive, factors: [righsideFactor])
             actualEquation2 = mathEquationBlueprint(leftSide: [firstTerm, secondTerm], relation: .equal, rightSide: [rightside2])
             

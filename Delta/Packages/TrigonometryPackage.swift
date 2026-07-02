@@ -11,7 +11,11 @@ import SwiftUI
 import Combine
 import TestCreation
 
- class TrigonometryPackage: ObservableObject, Package {
+class TrigonometryPackage: ObservableObject, Package {
+    func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
+        createQuestion()
+    }
+    
 
     // MARK: Identity
     let id = UUID()
@@ -77,7 +81,7 @@ import TestCreation
         }
 
         return Question(
-            creator: id,
+            creator: id, questionName: "",
             questionType: .text,
             questionText: "What is \(type)(\(angle)°)?",
             questionContent: QuestionContent {
@@ -114,7 +118,7 @@ import TestCreation
         }
 
         return Question(
-            creator: id,
+            creator: id, questionName: "",
             questionType: .text,
             questionText: "What is cos(\(angle)°)?",
             questionContent: QuestionContent {

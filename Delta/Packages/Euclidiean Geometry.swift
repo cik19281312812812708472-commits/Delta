@@ -11,6 +11,10 @@ import SwiftUI
 import Combine
 
 class EuclideanGeo: Package {
+    func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
+        createQuestion()
+    }
+    
   
     
     
@@ -76,7 +80,7 @@ class EuclideanGeo: Package {
         
         
             
-            var questionView = AnyView(
+            let questionView = AnyView(
                 VStack {
                     
                 }
@@ -87,7 +91,7 @@ class EuclideanGeo: Package {
         let questionContent2 = QuestionContent {questionView} 
         
 
-        var result = Question(creator: self.id, questionText: "Solve for x and y in these linear Systems", questionContent: questionContent2, questionContentSizeX: CGFloat(10), questionContentSizeY: CGFloat(10), questionAnswer: "x")
+        let result = Question(creator: self.id, questionName: "", questionText: "Solve for x and y in these linear Systems", questionContent: questionContent2, questionContentSizeX: CGFloat(10), questionContentSizeY: CGFloat(10), questionAnswer: "x")
         return result
        
     }

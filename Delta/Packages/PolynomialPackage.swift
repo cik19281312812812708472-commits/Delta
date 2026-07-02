@@ -11,7 +11,11 @@ import SwiftUI
 import Combine
 import TestCreation
 
- class PolynomialPackage: ObservableObject, Package {
+class PolynomialPackage: ObservableObject, Package {
+    func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
+        createQuestion()
+    }
+    
 
     // MARK: Identity
     let id = UUID()
@@ -64,7 +68,7 @@ import TestCreation
         let answer = "\(a)x² + \(a * Int.random(in: 1...3) + b)x + \(b * Int.random(in: 1...3))"
 
         return Question(
-            creator: id,
+            creator: id, questionName: "",
             questionType: .text,
             questionText: "Expand: \(question)",
             questionContent: QuestionContent {
@@ -93,7 +97,7 @@ import TestCreation
         let simplified = "\(a + b)x + \(c)"
 
         return Question(
-            creator: id,
+            creator: id, questionName: "",
             questionType: .text,
             questionText: "Simplify: \(question)",
             questionContent: QuestionContent {

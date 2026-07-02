@@ -11,6 +11,12 @@ import TestCreation
 
 class LinearSystemCreator: Package, ObservableObject {
     
+    func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
+        createQuestion()
+        
+    }
+    
+    
     var publicName: String = "Linear System Creator"
     
     var internalName: String = "LinearSystemCreator"
@@ -35,7 +41,7 @@ class LinearSystemCreator: Package, ObservableObject {
         
         var section: [Question] = []
         
-        for i in 0..<allChangbleInts[1].int {
+        for _ in 0..<allChangbleInts[1].int {
             let newQuestion = createQuestion()
             section.append(newQuestion)
         }
@@ -212,7 +218,7 @@ class LinearSystemCreator: Package, ObservableObject {
         )}
         //MARK: Add omitting of questions with 0 in it
         
-        finalQuestion = Question(creator: self.id, questionText: "Solve the linear system:", questionContent: questionContent, questionContentSizeX: 500, questionContentSizeY: 500, questionAnswer: answer)
+        finalQuestion = Question(creator: self.id, questionName: "", questionText: "Solve the linear system:", questionContent: questionContent, questionContentSizeX: 500, questionContentSizeY: 500, questionAnswer: answer)
         
         
         

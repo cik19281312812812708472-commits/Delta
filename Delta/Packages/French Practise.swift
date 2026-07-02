@@ -9,6 +9,10 @@ import TestCreation
 import Combine
 
 class FrenchPractise: Package {
+    func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
+        createQuestion()
+    }
+    
     
     var publicName: String = "French Conjugation"
     
@@ -73,7 +77,7 @@ class FrenchPractise: Package {
             
             let content = QuestionContent {}
             
-            let trueQuestion = Question(creator: self.id, questionText: "Conjugate: \(theQuestion.Verb) | for \(theQuestion.Noun)", questionContent: content, questionContentSizeX: 0, questionContentSizeY: 0, questionAnswer: theQuestion.Answer)
+            let trueQuestion = Question(creator: self.id, questionName: "", questionText: "Conjugate: \(theQuestion.Verb) | for \(theQuestion.Noun)", questionContent: content, questionContentSizeX: 0, questionContentSizeY: 0, questionAnswer: theQuestion.Answer)
             
             
             allQuestions.append(trueQuestion)

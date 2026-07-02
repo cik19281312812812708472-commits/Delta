@@ -65,7 +65,8 @@ enum testStateBlueprint {
 
 class AppManager: ObservableObject {
     
-    
+    ///This is here to make sure that the loading test window stays closed untill it is asked for.
+    @Published var loadingTestWindowOpen: Bool = false
     
     @Published var appVersion: versionData_Type = versionData_Type(Major: 0, Minor: 2, Patch: 7)
     @Published var isLoading: Bool = false
@@ -74,7 +75,7 @@ class AppManager: ObservableObject {
     @Published var testState: testStateBlueprint = .selectingPackages
     
     /// in teh furture this will be loaded from a JSON as of now i will manually add them.
-    @Published var allPackages: [any Package] = [EnglishLitTerm(),  ScienceUnit1(), LinearSystemCreator(), ChemistryUnit1(), TrigonometryPackage(), PolynomialPackage(), AlgebraUnit1(), FrenchPractise(), NumberSetsUnit()
+    @Published var allPackages: [any Package] = [EnglishLitTerm(),  ScienceUnit1(), LinearSystemCreator(), ChemistryUnit1(), TrigonometryPackage(), PolynomialPackage(), AlgebraUnit1(), FrenchPractise(), NumberSetsUnit(), TriangleCentersPackage(), Geometry3DPackage(), PeriodicTable(), MathPract()
     
                                                  //examplePackage(), EuclideanGeo()
     ]

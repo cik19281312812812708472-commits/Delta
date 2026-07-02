@@ -13,6 +13,9 @@ import Combine
 
 
 class EnglishLitTerm: Package {
+    func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
+        createQuestion()
+    }
     
     
     static func == (lhs: EnglishLitTerm, rhs: EnglishLitTerm) -> Bool {
@@ -287,12 +290,42 @@ class EnglishLitTerm: Package {
     func createSection(numOfQuestions: Int) -> [Question] {
         
         var questions: [Question] = []
-        
-        var i = 1
-        while i < numberOfQuestionsPerSection {
-            questions.append(createQuestion())
-            i += 1
+        if numberOfQuestionsPerSection == 42 {
+            
+            let allQuestions = loadAllQuestions()
+            
+            for question in allQuestions {
+                
+                let questionWords = question.questionWords
+                let questionAnswer = question.answer
+                
+                struct questionView: View {
+                    
+                    var questionWords: String = ""
+                    
+                    var body: some View {
+                        Text("\(questionWords)")
+                    }
+                    
+                    init(questionWords: String) {
+                        self.questionWords = questionWords
+                    }
+                    
+                }
+                
+                let questionContent2 = QuestionContent { AnyView (VStack {  Text(questionWords)  }) }
+                
+                
+                questions.append(Question(creator: self.id, questionName: "", questionText: "Spell the word:", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionAnswer))
+            }
+        } else {
+            var i = 1
+            while i < numberOfQuestionsPerSection {
+                questions.append(createQuestion())
+                i += 1
+            }
         }
+       
         
         
             
@@ -359,7 +392,7 @@ class EnglishLitTerm: Package {
        
         
 
-        var result = Question(creator: self.id, questionText: "Spell the word:", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionAnswer)
+        let result = Question(creator: self.id, questionName: "", questionText: "Spell the word:", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionAnswer)
         return result
     }
     

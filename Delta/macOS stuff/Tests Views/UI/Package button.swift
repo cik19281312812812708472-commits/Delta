@@ -19,6 +19,7 @@ struct PackageButton: View {
     @Environment(\.colorScheme) var colorScheme
     
     @EnvironmentObject var testManager: TestManager
+    @EnvironmentObject var generalData: GeneralData
     
     @State private var isSettingsShown: Bool = false
     @State private var isDescriptionShown: Bool = false
@@ -28,7 +29,7 @@ struct PackageButton: View {
     @State private var allChangableBools: [boolSetting] = []
     @State private var allChangeableInts: [intSetting] = []
     @State private var allChangeableDoubles: [doubleSetting] = []
-    
+   
     var idealBlack = Color(red: 11/255,green: 13/255, blue: 43/255)
     
     var body: some View {
@@ -61,9 +62,9 @@ struct PackageButton: View {
                         .overlay {
                             RoundedRectangle(cornerRadius: 12)
                                 .fill(colorScheme == .light ?  Color(red: 245/255, green: 242/255, blue: 240/255) : idealBlack)
-                                .stroke(testManager.packagesSelected.contains(package.id) == true ? Color.accentColor : Color.white, lineWidth: testManager.packagesSelected.contains(package.id) == true ? 2 : 1)
+                                .stroke(testManager.packagesSelected.contains(package.id) == true ? Color.accentColor : Color.white, lineWidth: testManager.packagesSelected.contains(package.id) == true ? 3 : 2)
                         }
-                        .shadow(color: colorScheme == .light ? .black.opacity(0.1) : .white.opacity(0.1), radius: 8, x: 1, y: 1)
+                        .shadow(color: generalData.getShadowColor().opacity(generalData.idealShadowOpacity), radius: 8, x: 1, y: 1)
                     
                     HStack {
                         
@@ -88,6 +89,7 @@ struct PackageButton: View {
                     }
                     
                 }
+                .hoverEffect(cornerRadius: 10)
                 .frame(width: geo.size.width * 0.1, height: geo.size.height * 0.05)
                 
             }
@@ -110,8 +112,6 @@ struct PackageButton: View {
                 GeometryReader { sheetGeo in
                     ZStack {
                         
-                       
-                    
                         ScrollView {
                             Text("Settings")
                                 .font(.title.bold())
@@ -123,6 +123,9 @@ struct PackageButton: View {
                             ForEach($allChangableBools) { $setting in
                                 Toggle(setting.name, isOn: $setting.bool)
                                     .toggleStyle(.switch)
+                                    .contextMenu() {
+                                        Text(setting.description != "" ? setting.description : "No Description")
+                                    }
                             }
                             if allChangableBools.count > 0 {
                                 Divider()
@@ -133,13 +136,19 @@ struct PackageButton: View {
                                 
                                 HStack {
                                     TextField("Integer", text: $setting.tempIntString)
-                                        .onChange(of: setting.tempIntString) {_ in
+                                        .onChange(of: setting.tempIntString) {_, _ in
                                             let tempIntString = setting.tempIntString
                                             setting.int = Int(tempIntString.filter {"-+.0123456789".contains($0)}) ?? 0
                                             
                                         }
                                         .frame(width: sheetGeo.size.width * 0.15)
+                                        .contextMenu() {
+                                            Text(setting.description != "" ? setting.description : "No Description")
+                                        }
                                     Text(setting.name)
+                                        .contextMenu() {
+                                            Text(setting.description != "" ? setting.description : "No Description")
+                                        }
                                 }
                                   
                             }
@@ -149,13 +158,19 @@ struct PackageButton: View {
                                 
                                 HStack {
                                     TextField("Decimal", text: $setting.tempDoubleString)
-                                        .onChange(of: setting.tempDoubleString) {_ in
+                                        .onChange(of: setting.tempDoubleString) {_, _ in
                                             let tempIntString = setting.tempDoubleString
                                             setting.double = Double(tempIntString.filter {"-+0123456789".contains($0)}) ?? 0
                                             
                                         }
                                         .frame(width: sheetGeo.size.width * 0.15)
+                                        .contextMenu() {
+                                            Text(setting.description != "" ? setting.description : "No Description")
+                                        }
                                     Text(setting.name)
+                                        .contextMenu() {
+                                            Text(setting.description != "" ? setting.description : "No Description")
+                                        }
                                 }
                                 
                             }

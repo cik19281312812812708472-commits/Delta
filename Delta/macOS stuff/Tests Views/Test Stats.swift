@@ -31,9 +31,6 @@ struct TestStats: View {
                 Background(geo: geo)
                 
                 
-                
-                
-                
                 RoundedRectangle(cornerRadius: 20)
                     .fill(.thinMaterial)
                     .frame(width: geo.size.width * 0.8, height: geo.size.height * 0.8)

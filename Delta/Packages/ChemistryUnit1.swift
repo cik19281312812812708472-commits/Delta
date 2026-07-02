@@ -11,7 +11,9 @@ import Combine
 import TestCreation
 
 class ChemistryUnit1: Package, ObservableObject {
-    
+    func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
+        createQuestion()
+    }
     var publicName: String = "SNC1W Chemistry Unit"
     
     var internalName: String = "chemistryUnit1"
@@ -85,7 +87,7 @@ class ChemistryUnit1: Package, ObservableObject {
         let cases = loadAllCases()
         if cases.isEmpty {
             let emptyContent = QuestionContent { AnyView(VStack { Text("No questions loaded") }) }
-            return Question(creator: self.id, questionText: "Empty", questionContent: emptyContent, questionContentSizeX: 500, questionContentSizeY: 500, questionAnswer: "None")
+            return Question(creator: self.id, questionName: "", questionText: "Empty", questionContent: emptyContent, questionContentSizeX: 500, questionContentSizeY: 500, questionAnswer: "None")
         }
         
         if self.questionNum >= cases.count {
@@ -97,7 +99,7 @@ class ChemistryUnit1: Package, ObservableObject {
         
         // 2. Create the real Question object directly from the enum case properties
         let trueQuestion = Question(
-            creator: self.id,
+            creator: self.id, questionName: "",
             questionText: currentCase.questionWords,
             questionContent: currentCase.questionContent, // Injects the custom layout perfectly!
             questionContentSizeX: 500,

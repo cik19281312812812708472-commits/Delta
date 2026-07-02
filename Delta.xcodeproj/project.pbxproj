@@ -37,28 +37,18 @@
 		D616E9A92FA3FFE500FDA862 /* Exceptions for "Delta" folder in "Delta" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Info.plist,
 				"Things to do.txt",
 			);
 			target = D6E16DC52F5B83390072A5E7 /* Delta */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		D616E9AA2FA3FFE500FDA862 /* Exceptions for "Delta" folder in "Compile Sources" phase from "Delta" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = D6E16DC22F5B83390072A5E7 /* Sources */;
-			membershipExceptions = (
-				"Things to do.txt",
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		D6E16DC82F5B83390072A5E7 /* Delta */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				D616E9A92FA3FFE500FDA862 /* Exceptions for "Delta" folder in "Delta" target */,
-				D616E9AA2FA3FFE500FDA862 /* Exceptions for "Delta" folder in "Compile Sources" phase from "Delta" target */,
 			);
 			path = Delta;
 			sourceTree = "<group>";
@@ -431,6 +421,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Delta/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -476,6 +467,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Delta/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;

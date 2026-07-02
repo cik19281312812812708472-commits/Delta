@@ -250,7 +250,7 @@ struct testView: View {
                         
                     }
                     .fixedSize()
-                    .animation(.smooth)
+                    .animation(.smooth, value: true)
                     .position(x: geo.size.width / 2, y: geo.size.height * 0.95)
                 }
                    

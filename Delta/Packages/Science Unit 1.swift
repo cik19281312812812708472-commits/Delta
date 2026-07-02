@@ -11,6 +11,10 @@ import Combine
 
 
 class ScienceUnit1: Package, ObservableObject {
+    func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
+        createQuestion()
+    }
+    
     
     var publicName: String = "Science Space Unit"
     
@@ -51,7 +55,7 @@ THIS PACKAGE HAS SOME MISSING QUESTIONS AND ANSWERS
         
         var allQuestions: [Question] = []
         
-        for i in 0..<numberOfQuestionsMadePerSection {
+        for _ in 0..<numberOfQuestionsMadePerSection {
             allQuestions.append(createQuestion())
         }
         questionNum = 0
@@ -105,7 +109,7 @@ THIS PACKAGE HAS SOME MISSING QUESTIONS AND ANSWERS
         let questionContent = QuestionContent { AnyView (VStack {    }) }
         
         
-        let trueQuestion = Question(creator: self.id, questionText: lightQuestion.questionWords, questionContent: questionContent, questionContentSizeX: 500, questionContentSizeY: 500, questionAnswer: lightQuestion.answer)
+        let trueQuestion = Question(creator: self.id, questionName: "", questionText: lightQuestion.questionWords, questionContent: questionContent, questionContentSizeX: 500, questionContentSizeY: 500, questionAnswer: lightQuestion.answer)
         
         self.questionNum += 1
         return trueQuestion

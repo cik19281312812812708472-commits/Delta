@@ -23,25 +23,27 @@ struct Section {
 //MARK: ADD QUESTION TYPE ID
  class TestManager: ObservableObject {
     
-    @Published var packagesSelected: [UUID] = []
-    @Published var packagesNotSelected: [UUID] = []
-    @Published var allPackages: [UUID:any Package] = [:]
+     @Published var packagesSelected: [UUID] = []
+     @Published var packagesNotSelected: [UUID] = []
+     @Published var allPackages: [UUID:any Package] = [:]
      
      
+     @Published var testName: String = "Blank Test"
      
-    @Published var allQuestions: [Question] = []
-    @Published var stashOfAllQuestions: [Question] = []
-    @Published var stashOfAllQuestionsMarks: [Int] = []
+     @Published var allQuestions: [Question] = []
+     @Published var stashOfAllQuestions: [Question] = []
+     @Published var stashOfAllQuestionsMarks: [Int] = []
      
      
-    @Published var allQuestionsWrong: [Question] = []
+     @Published var allQuestionsWrong: [Question] = []
      @Published var allQuestionsCorrect: [Question] = []
      
      @Published var previousQuestion: Question? = nil
-    @Published var createdTest: Bool = false
+     @Published var createdTest: Bool = false
+     @Published var startedTest: Bool = false
  
-    @Published var currentQuestionNumber: Int = 0
-    @Published var currentQuestion: Question? = nil
+     @Published var currentQuestionNumber: Int = 0
+     @Published var currentQuestion: Question? = nil
      @Published var questionsSuggested: [Question] = []
   
      
@@ -51,10 +53,24 @@ struct Section {
      @Published var randomizeQuestionsAtStart: Bool = false
      @Published var correctAnswerWaitingTime: Double = 2.0
      
+     @Published var savedTest: Bool = false
+     //@Published var allTests: [Test] = []
+     
+     @Published var loadedTest: Test? = nil
+     
+     @Published var allTestNames: [String] = []
+     
+     
+     
     var appManager: AppManager
     
     init(theAppManager: AppManager) {
         self.appManager = theAppManager
+        
+        for package in appManager.allPackages {
+            allPackages[package.id] = package
+        }
+        
     }
     
      
@@ -67,6 +83,7 @@ struct Section {
          allQuestionsCorrect = []
          previousQuestion = nil
          createdTest = false
+         startedTest = false
          currentQuestionNumber = 0
          currentQuestion = nil
          questionsSuggested = []
@@ -110,7 +127,7 @@ struct Section {
         
         for i in 0..<actualPackagesSelected.count {
             
-            var section: [Question] = actualPackagesSelected[i].createSection(numOfQuestions: 10)
+            let section: [Question] = actualPackagesSelected[i].createSection(numOfQuestions: 10)
             
             tempAllQuestions += section
             
@@ -124,21 +141,19 @@ struct Section {
     }
     
     
-    
+    ///This funcion si
     func startTest() {
         
-       
+        startedTest = true 
+        
         stashOfAllQuestions = allQuestions
         stashOfAllQuestionsMarks = allQuestions.map {_ in 0}
-        
-        
-    
         
         currentQuestionNumber = 0
         currentQuestion = allQuestions[currentQuestionNumber]
         
         appManager.testState = .runningTest
-
+        
     }
     
     
@@ -153,7 +168,7 @@ struct Section {
          
         if allowTestAlgorithm == true {
            
-            let question = allQuestions[currentQuestionNumber]
+            //let question = allQuestions[currentQuestionNumber]
           
             algorithmia_markQuestion(allQuestions[currentQuestionNumber])
         } else {
@@ -208,10 +223,9 @@ struct Section {
     }
     
      func flagQuestion() {
-         
-         let actualQuestionNumber = currentQuestionNumber % stashOfAllQuestions.count
-         stashOfAllQuestionsMarks[actualQuestionNumber] -= 1
-         
+         //MARK: Fix the var names
+         let actualQuestionNumber = (currentQuestionNumber + 1) % stashOfAllQuestions.count
+         stashOfAllQuestionsMarks[actualQuestionNumber - 1] -= 1
          
      }
      
@@ -293,7 +307,7 @@ struct Section {
          //MARK: FIX THIS
          let questionContent2 = QuestionContent { AnyView (VStack {  Text(questionWords)  }) }
          
-         var suggestedQuestion: Question = Question(creator: UUID(), questionText: "", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionWords)
+         var suggestedQuestion: Question = Question(creator: UUID(), questionName: "", questionText: "", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionWords)
          
          if allQuestionsWrong.count > 0 {
              

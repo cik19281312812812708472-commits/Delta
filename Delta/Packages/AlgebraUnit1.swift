@@ -12,6 +12,10 @@ import Combine
 import TestCreation
 
 class AlgebraUnit1: Package, ObservableObject {
+    func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
+        createQuestion()
+    }
+    
     
     var publicName: String = "Grade 9 Linear Algebra Practice"
     
@@ -82,7 +86,7 @@ class AlgebraUnit1: Package, ObservableObject {
         let cases = loadAllCases()
         if cases.isEmpty {
             let emptyContent = QuestionContent { VStack { Text("No algebra questions loaded") } }
-            return Question(creator: self.id, questionType: .text, questionText: "Empty", questionContent: emptyContent, questionContentSizeX: 500, questionContentSizeY: 500, questionAnswer: "None")
+            return Question(creator: self.id, questionName: "", questionType: .text, questionText: "Empty", questionContent: emptyContent, questionContentSizeX: 500, questionContentSizeY: 500, questionAnswer: "None")
         }
         
         if self.questionNum >= cases.count {
@@ -95,7 +99,7 @@ class AlgebraUnit1: Package, ObservableObject {
         let trueQuestion: Question
         if currentCase.questionType == .math {
             trueQuestion = Question(
-                creator: self.id,
+                creator: self.id, questionName: "",
                 questionType: .math,
                 questionText: currentCase.questionWords,
                 questionContent: currentCase.questionContent,
@@ -105,7 +109,7 @@ class AlgebraUnit1: Package, ObservableObject {
             )
         } else {
             trueQuestion = Question(
-                creator: self.id,
+                creator: self.id, questionName: "",
                 questionType: .text,
                 questionText: currentCase.questionWords,
                 questionContent: currentCase.questionContent,
