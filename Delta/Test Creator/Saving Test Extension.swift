@@ -10,7 +10,38 @@ import Foundation
 import Combine
 import SwiftUI
 
+extension Array where Element == Question {
+    
+     func filterQuestions(isIncluded: (Question) -> Bool) -> [TempQuestion] {
+        
+        var result: [TempQuestion] = []
+        
+        for i in 0..<self.count {
+            
+            
+            let question = self[i]
+            
+            if isIncluded(question) {
+                
+                let tempQuestion = TempQuestion(question: question, index: i)
+                
+                result.append(tempQuestion)
+            }
+        }
+        
+        return result
+    }
+    
+    
+}
 
+ struct TempQuestion {
+    
+    var question: Question
+    var index: Int
+    
+    
+}
 
 extension TestManager {
     //what does it mean
@@ -23,31 +54,169 @@ extension TestManager {
         
         // each package should add the extra discription
         
-        //MARK: Converting the Questions into descriptions of them.
-        let tempAllQuestions = allQuestions.map{DescriptionOfQuestion(question: $0)}
-        let tempStashOfAllQuestions = stashOfAllQuestions.map{DescriptionOfQuestion(question: $0)}
-        let tempAllQuestionsWrong = allQuestionsWrong.map{DescriptionOfQuestion(question: $0)}
-        let tempAllQuestionsCorrect = allQuestionsCorrect.map{DescriptionOfQuestion(question: $0)}
+        //MARK: - Converting the Questions into descriptions of them.
+        //this should save the question index
+        //convert tthe questions into tmep of questions them compare it via filtering it
         
-        /*var tempPreviousQuestion: DescriptionOfQuestion?
+        //creating a vars that holds all the questions that the test will use so that we can save we will save the index so themn we  cana accses
         
-        if previousQuestion != nil {
-         tempPreviousQuestion = DescriptionOfQuestion(question: previousQuestion!)
-        } else {
-         tempPreviousQuestion = nil
+        //we can do this twice as there surley wont be 10000+ questions.
+        
+        func getDescriptionOfQuestionsFromPackages(questions: [TempQuestion]) -> [DescriptionOfQuestion] {
+            var allDescriptions: [DescriptionOfQuestion] = []
+            
+            for tempQuestion in questions {
+                
+                if let packageOwner = allPackages[tempQuestion.question.packageOwner] {
+                    
+                    var descriptionOfQuestion = packageOwner.saveQuestion(question: tempQuestion.question)
+                    
+                    descriptionOfQuestion.questionIndex = tempQuestion.index
+                    
+                    allDescriptions.append(descriptionOfQuestion)
+                }
+            }
+            
+            return allDescriptions
         }
-
-        var tempCurrentQuestion: DescriptionOfQuestion?
         
-        if currentQuestion != nil {
-            tempCurrentQuestion = DescriptionOfQuestion(question: currentQuestion!)
-        } else {
-            tempCurrentQuestion = nil
+        func getDescriptionOfQuestions(from questions: [TempQuestion]) -> [DescriptionOfQuestion] {
+            
+            var descriptionOfQuestions: [DescriptionOfQuestion] = []
+            
+            for i in 0..<questions.count {
+                
+                let question = questions[i].question
+                
+                if let packageOwner = allPackages[question.packageOwner] {
+                    
+                    var questionDescription = DescriptionOfQuestion(ownerInternalName: packageOwner.internalName, question: question)
+                    
+                    questionDescription.questionIndex = questions[i].index
+                    
+                    descriptionOfQuestions.append(questionDescription)
+                }
+            }
+            
+            return descriptionOfQuestions
         }
-         */
         
-        let tempQuestionsSuggested = questionsSuggested.map{DescriptionOfQuestion(question: $0)}
         
+        let tempStashOfAllQuestionsSelfCreated: [TempQuestion] = stashOfAllQuestions.filterQuestions { $0.letTestManagerCreateDescriptionOfQuestion }
+        let tempStashOfAllQuestionsNotSelfCreated: [TempQuestion] = stashOfAllQuestions.filterQuestions { !$0.letTestManagerCreateDescriptionOfQuestion }
+        
+        let stashOfAllQuestionsSelfCreated: [DescriptionOfQuestion] = getDescriptionOfQuestions(from: tempStashOfAllQuestionsSelfCreated)
+        
+        
+        
+        let stashOfAllQuestionsNotSelfCreated: [DescriptionOfQuestion] = getDescriptionOfQuestionsFromPackages(questions: tempStashOfAllQuestionsNotSelfCreated)
+        
+        
+        let tempallQuestionsSelfCreated: [TempQuestion] = allQuestions.filterQuestions { $0.letTestManagerCreateDescriptionOfQuestion == true }
+        let tempallQuestionsNotSelfCreated: [TempQuestion] = allQuestions.filterQuestions { $0.letTestManagerCreateDescriptionOfQuestion == false }
+       
+       
+        let allQuestionsSelfCreated: [DescriptionOfQuestion] = getDescriptionOfQuestions(from: tempallQuestionsSelfCreated)
+        print("AllQuestions Sefl created: ", allQuestionsSelfCreated)
+        let allQuestionsNotSelfCreated: [DescriptionOfQuestion] = getDescriptionOfQuestionsFromPackages(questions: tempallQuestionsNotSelfCreated)
+        print("allQuestions not self created: ", allQuestionsNotSelfCreated)
+        print("Allquestions Self created: ")
+        
+        var questionsWrongSelfCreated: [DescriptionOfQuestion] {
+            
+            let tempQuestionsWrongSelfCreated = allQuestionsWrong.filterQuestions { $0.letTestManagerCreateDescriptionOfQuestion }
+            
+            return getDescriptionOfQuestions(from: tempQuestionsWrongSelfCreated)
+        }
+        
+        
+        var questionsWrongNotSelfCreated: [DescriptionOfQuestion] {
+         
+            let tempQuestionsWrongNotSelfCreated = allQuestionsWrong.filterQuestions { !$0.letTestManagerCreateDescriptionOfQuestion }
+            
+            return getDescriptionOfQuestionsFromPackages(questions: tempQuestionsWrongNotSelfCreated)
+        }
+        
+        var questionsCorrectSelfCreated: [DescriptionOfQuestion] {
+            
+            let tempQuestionsCorrectSelfCreated = allQuestionsCorrect.filterQuestions { $0.letTestManagerCreateDescriptionOfQuestion }
+            
+            return getDescriptionOfQuestions(from: tempQuestionsCorrectSelfCreated)
+        }
+       
+        var questionsCorrectNotSelfCreated: [DescriptionOfQuestion] {
+            
+            let tempQuestionsCorrectNotSelftCreated = allQuestionsCorrect.filterQuestions { !$0.letTestManagerCreateDescriptionOfQuestion }
+            
+            return getDescriptionOfQuestionsFromPackages(questions: tempQuestionsCorrectNotSelftCreated)
+        }
+        
+        
+        var questionsSuggestedSelfCreated: [DescriptionOfQuestion] {
+            
+            let tempQuestionsSuggestedSelfCreated = questionsSuggested.filterQuestions { $0.letTestManagerCreateDescriptionOfQuestion }
+            
+            return getDescriptionOfQuestions(from: tempQuestionsSuggestedSelfCreated)
+        }
+        
+        var questionsSuggestedNotSelfCreated: [DescriptionOfQuestion] {
+            
+            let tempQuestionsSuggestedNotSelfCreated = questionsSuggested.filterQuestions { !$0.letTestManagerCreateDescriptionOfQuestion }
+            
+            return getDescriptionOfQuestionsFromPackages(questions: tempQuestionsSuggestedNotSelfCreated)
+        }
+        
+       
+        
+        //MARK: - Recombining description of questions
+        // and ordering them back into thier order.
+        
+        var tempAllQuestions: [DescriptionOfQuestion] {
+            
+            var allQuestions = allQuestionsSelfCreated + allQuestionsNotSelfCreated
+            
+            //sorting the question index in asending order.
+            
+            allQuestions = allQuestions.sorted { $0.questionIndex < $1.questionIndex }
+            
+            return allQuestions
+        }
+        
+        var tempStashOfAllQuestions: [DescriptionOfQuestion] {
+            
+            var stashOfAllQuestions = stashOfAllQuestionsSelfCreated + stashOfAllQuestionsNotSelfCreated
+            
+            stashOfAllQuestions = stashOfAllQuestions.sorted { $0.questionIndex < $1.questionIndex }
+            
+            return stashOfAllQuestions
+        }
+        
+        var tempAllQuestionsWrong: [DescriptionOfQuestion] {
+            
+            var allQuestionsWrong = questionsWrongSelfCreated + questionsWrongNotSelfCreated
+            
+            allQuestionsWrong = allQuestionsWrong.sorted { $0.questionIndex < $1.questionIndex }
+            
+            return allQuestionsWrong
+        }
+        
+        var tempAllQuestionsCorrect: [DescriptionOfQuestion] {
+            
+            var allQuestionsCorrect = questionsCorrectSelfCreated + questionsCorrectNotSelfCreated
+            
+            allQuestionsCorrect = allQuestionsCorrect.sorted { $0.questionIndex < $1.questionIndex }
+            
+            return allQuestionsCorrect
+        }
+        
+        var tempQuestionsSuggested: [DescriptionOfQuestion] {
+            
+            var questionsSuggested = questionsSuggestedSelfCreated + questionsSuggestedNotSelfCreated
+            
+            questionsSuggested = questionsSuggested.sorted { $0.questionIndex < $1.questionIndex }
+            
+            return questionsSuggested
+        }
         
         //MARK: Creating the test.
         let testToSave = Test(name: testName, allQuestions: tempAllQuestions, stashOfAllQuestions: tempStashOfAllQuestions, stashOfAllQuestionsMarks: stashOfAllQuestionsMarks, allQuestionsWrong: tempAllQuestionsWrong, allQuestionsCorrect: tempAllQuestionsCorrect, startedTest: startedTest, currentQuestionNumber: currentQuestionNumber, questionsSuggested: tempQuestionsSuggested)
@@ -81,6 +250,10 @@ extension TestManager {
         }
         
        savedTest = true 
+        
+        print("~~~~~")
+        print("Test TO SAVE: ", testToSave)
+        
         
     }
     
@@ -190,7 +363,6 @@ extension TestManager {
        
     }
     
-    
     func findURLinAppSupport(_ url: URL? = nil) -> URL {
         
         let fileManager = FileManager.default
@@ -206,12 +378,5 @@ extension TestManager {
         return appSupportURL
         
     }
-    
-    
-    
-    
-    
-    
-    
     
 }

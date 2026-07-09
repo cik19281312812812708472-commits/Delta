@@ -14,7 +14,9 @@ class ScienceUnit1: Package, ObservableObject {
     func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
         createQuestion()
     }
-    
+    func saveQuestion(question: TestCreation.Question) -> TestCreation.DescriptionOfQuestion {
+        DescriptionOfQuestion(ownerInternalName: internalName, question: question)
+    }
     
     var publicName: String = "Science Space Unit"
     

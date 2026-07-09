@@ -11,6 +11,9 @@ import Combine
 import TestCreation
 
 class ChemistryUnit1: Package, ObservableObject {
+    func saveQuestion(question: TestCreation.Question) -> TestCreation.DescriptionOfQuestion {
+        DescriptionOfQuestion(ownerInternalName: internalName, question: question)
+    }
     func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
         createQuestion()
     }

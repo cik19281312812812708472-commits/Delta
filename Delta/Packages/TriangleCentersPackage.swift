@@ -13,6 +13,11 @@ import TestCreation
 @available(macOS 10.15, iOS 13, *)
 class TriangleCentersPackage: Package {
     
+    func saveQuestion(question: TestCreation.Question) -> TestCreation.DescriptionOfQuestion {
+        DescriptionOfQuestion(ownerInternalName: internalName, question: question)
+    }
+    
+    
     // MARK: - Package Protocol Properties
     let publicName: String = "Triangle Centers & Concurrency"
     let internalName: String = "TriangleCentersPackage"
@@ -98,7 +103,7 @@ class TriangleCentersPackage: Package {
     func loadQuestion(descriptionOfQuestion: DescriptionOfQuestion) -> Question {
         // Matches your exact .text initializer signatures using decoded persistent data
         return Question(
-            creator: descriptionOfQuestion.creator,
+            creator: id,
             questionName: descriptionOfQuestion.questionName,
             questionType: .text, // Reconstructed safely as a text type question
             questionText: descriptionOfQuestion.questionText,

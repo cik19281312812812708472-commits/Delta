@@ -10,6 +10,10 @@ import Foundation
 import TestCreation
 
 class LinearSystemCreator: Package, ObservableObject {
+    func saveQuestion(question: TestCreation.Question) -> TestCreation.DescriptionOfQuestion {
+        DescriptionOfQuestion(ownerInternalName: internalName, question: question)
+    }
+    
     
     func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
         createQuestion()

@@ -4,7 +4,7 @@
 ///
 ///  Created by Desire on 2026-03-06.
 ///
-///   code that manages the package creation and compiles it into one neet thing each views has thier own viewer .
+///  er .
 ///
 ///
 
@@ -12,13 +12,6 @@
 import Foundation
 import Combine
 import TestCreation
-
-
-struct Section {
-    
-    
-    
-}
 
 //MARK: ADD QUESTION TYPE ID
  class TestManager: ObservableObject {
@@ -31,6 +24,8 @@ struct Section {
      @Published var testName: String = "Blank Test"
      
      @Published var allQuestions: [Question] = []
+     
+     //this is used in the algorithim to suggest a question as allQuestions changes this just stores all the questions that can exist.
      @Published var stashOfAllQuestions: [Question] = []
      @Published var stashOfAllQuestionsMarks: [Int] = []
      
@@ -210,13 +205,6 @@ struct Section {
                  
              }
              
-             
-             
-             
-             
-             
-             
-             
          }
         
         
@@ -302,15 +290,9 @@ struct Section {
      
      func algorithmia_suggestNextQuestion() -> Question {
          
-      
-         let questionWords = "test"
-         //MARK: FIX THIS
-         let questionContent2 = QuestionContent { AnyView (VStack {  Text(questionWords)  }) }
-         
-         var suggestedQuestion: Question = Question(creator: UUID(), questionName: "", questionText: "", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionWords)
+         var suggestedQuestion: Question = Question.getNullQuestion()
          
          if allQuestionsWrong.count > 0 {
-             
              
              suggestedQuestion = allQuestionsWrong.randomElement()!
              questionsSuggested.append(suggestedQuestion)

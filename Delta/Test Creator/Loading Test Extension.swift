@@ -117,20 +117,20 @@ extension TestManager {
             var tempPackagesSelected: [UUID] = []
             
             func loadQuestion(_ question: DescriptionOfQuestion) -> Question {
-                let creator = question.creator
+                let creatorInternalName = question.creatorInternalName
                 
                 var trueQuestion = Question.getNullQuestion()
                 
                 for i in 0..<appManager.allPackages.count {
                     
                     let package = appManager.allPackages[i]
-                    print(creator, package.id, " is ", package.id == creator)
-                    if package.id == creator {
+                    print(creatorInternalName, package.id, " is ", package.internalName == creatorInternalName)
+                    if package.internalName == creatorInternalName {
                         trueQuestion = appManager.allPackages[i].loadQuestion(descriptionOfQuestion: question)
                         
                         
-                        if !tempPackagesSelected.contains(creator) {
-                            tempPackagesSelected.append(creator)
+                        if !tempPackagesSelected.contains(package.id) {
+                            tempPackagesSelected.append(package.id)
                         }
                         
                         

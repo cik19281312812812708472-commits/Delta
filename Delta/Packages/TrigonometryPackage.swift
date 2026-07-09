@@ -15,6 +15,9 @@ class TrigonometryPackage: ObservableObject, Package {
     func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
         createQuestion()
     }
+    func saveQuestion(question: TestCreation.Question) -> TestCreation.DescriptionOfQuestion {
+        DescriptionOfQuestion(ownerInternalName: internalName, question: question)
+    }
     
 
     // MARK: Identity

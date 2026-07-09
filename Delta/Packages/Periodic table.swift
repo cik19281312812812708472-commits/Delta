@@ -30,6 +30,9 @@ class PeriodicTable: Package {
     
     var allOmmittedQuestions: [String] = []
     
+    func saveQuestion(question: TestCreation.Question) -> TestCreation.DescriptionOfQuestion {
+        DescriptionOfQuestion(ownerInternalName: internalName, question: question)
+    }
     func updateInternalSettings() {
         
         allOmmittedQuestions = []

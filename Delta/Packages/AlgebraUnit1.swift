@@ -12,6 +12,9 @@ import Combine
 import TestCreation
 
 class AlgebraUnit1: Package, ObservableObject {
+    func saveQuestion(question: TestCreation.Question) -> TestCreation.DescriptionOfQuestion {
+        DescriptionOfQuestion(ownerInternalName: internalName, question: question)
+    }
     func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
         createQuestion()
     }
@@ -105,7 +108,7 @@ class AlgebraUnit1: Package, ObservableObject {
                 questionContent: currentCase.questionContent,
                 questionContentSizeX: 500,
                 questionContentSizeY: 500,
-                questionAnswer: currentCase.mathAnswer
+                questionAnswer: ""//currentCase.mathAnswer
             )
         } else {
             trueQuestion = Question(

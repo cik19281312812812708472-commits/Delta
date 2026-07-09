@@ -13,8 +13,34 @@ import Combine
 
 
 class EnglishLitTerm: Package {
+    func saveQuestion(question: Question) -> DescriptionOfQuestion {
+        
+        var descriptionOfQuestion = DescriptionOfQuestion(ownerInternalName: self.internalName, question: question)
+        
+        descriptionOfQuestion.questionName = "Spell the word:"
+        descriptionOfQuestion.questionText = question.questionDescription
+        
+        return descriptionOfQuestion
+        
+    }
+    
     func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
-        createQuestion()
+        let questionWords = descriptionOfQuestion.questionText
+        let questionAnswer = descriptionOfQuestion.questionAnswer
+        
+        
+        
+        let questionContent2 = QuestionContent { AnyView (VStack {  Text(questionWords)  }) }
+        
+       
+        
+
+        var result = Question(creator: self.id, questionName: "", questionText: "Spell the word:", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionAnswer, questionDescription: questionWords)
+        
+        result.letTestManagerCreateDescriptionOfQuestion = false
+        
+        
+        return result
     }
     
     
@@ -315,8 +341,10 @@ class EnglishLitTerm: Package {
                 
                 let questionContent2 = QuestionContent { AnyView (VStack {  Text(questionWords)  }) }
                 
+                let trueQuestion = Question(creator: self.id, questionName: "", questionText: "Spell the word:", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionAnswer, questionDescription: questionWords, letTestManagerCreateDescriptionOfQuestion: false)
                 
-                questions.append(Question(creator: self.id, questionName: "", questionText: "Spell the word:", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionAnswer))
+                
+                questions.append(trueQuestion)
             }
         } else {
             var i = 1
@@ -392,7 +420,10 @@ class EnglishLitTerm: Package {
        
         
 
-        let result = Question(creator: self.id, questionName: "", questionText: "Spell the word:", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionAnswer)
+        var result = Question(creator: self.id, questionName: "", questionText: "Spell the word:", questionContent: questionContent2 , questionContentSizeX: CGFloat(500), questionContentSizeY: CGFloat(500), questionAnswer: questionAnswer, questionDescription: questionWords)
+        
+        result.letTestManagerCreateDescriptionOfQuestion = false
+        
         return result
     }
     

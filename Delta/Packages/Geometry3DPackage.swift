@@ -36,6 +36,10 @@ class Geometry3DPackage: Package {
         setup()
     }
     
+    func saveQuestion(question: TestCreation.Question) -> TestCreation.DescriptionOfQuestion {
+        DescriptionOfQuestion(ownerInternalName: internalName, question: question)
+    }
+    
     func setup() {
         // Initialize your app's custom setting types
         allChangbleBools = [
