@@ -68,12 +68,11 @@ struct LoadTestButton: View {
                         
                         ForEach(testManager.allTestNames, id: \.self) { testName in
                             TestButton(testName: testName, geo: sheetGeo)
+                            Spacer()
                         }
                     }
                     .frame(width: sheetGeo.size.width, height: sheetGeo.size.height)
                     .position(x: sheetGeo.size.width / 2, y: sheetGeo.size.height / 2)
-                    
-                    
                     
                     Button {
             
@@ -132,7 +131,7 @@ extension LoadTestButton {
                         // this is here for highlighting
                         
                         RoundedRectangle(cornerRadius: 8)
-                            .stroke(colorScheme == .dark ? generalData.getWhite(254) : generalData.idealBlack, lineWidth: 2)
+                            .stroke(colorScheme == .dark ? generalData.getWhite(254) : generalData.idealBlack, lineWidth: 4)
                             .fill(colorScheme == .light ? generalData.getWhite(254) : generalData.idealBlack)
                             
                             
@@ -150,7 +149,7 @@ extension LoadTestButton {
                             Image(systemName: "chart.line.text.clipboard")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: geo.size.width * 0.025, height: geo.size.width * 0.025)
+                                .frame(width: geo.size.width * 0.03, height: geo.size.width * 0.03)
                             
                             
                             Text(testName)
@@ -161,11 +160,17 @@ extension LoadTestButton {
                     
                     
                 }
+                .contextMenu {
+                    Button("Delete Test") {
+                        testManager.deleteTest(testName: testName)
+                        
+                    }
+                }
                 //.hoverEffect(cornerRadius: 8)
                 .buttonStyle(.plain)
                 
             }
-            .frame(width: geo.size.width * 0.15, height: geo.size.height * 0.051)
+            .frame(width: geo.size.width * 0.2, height: geo.size.height * 0.102)
            
             
             

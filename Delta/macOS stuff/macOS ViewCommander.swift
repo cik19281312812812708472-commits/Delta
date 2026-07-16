@@ -18,12 +18,6 @@ struct macOSViewCommander: View {
     
     @EnvironmentObject var appManager: AppManager
     
-
-    
-    
-    
-    
-    
     var body: some View {
         
         GeometryReader { geo in
@@ -41,11 +35,6 @@ struct macOSViewCommander: View {
                 }
             }
         }
-        
-        
-        
-        
-        
         
     } // body end
     

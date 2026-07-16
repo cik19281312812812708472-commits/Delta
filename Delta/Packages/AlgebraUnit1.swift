@@ -12,6 +12,9 @@ import Combine
 import TestCreation
 
 class AlgebraUnit1: Package, ObservableObject {
+    
+   
+    
     func saveQuestion(question: TestCreation.Question) -> TestCreation.DescriptionOfQuestion {
         DescriptionOfQuestion(ownerInternalName: internalName, question: question)
     }
@@ -19,6 +22,8 @@ class AlgebraUnit1: Package, ObservableObject {
         createQuestion()
     }
     
+    
+    var packageType: PackageTypes = .mathPackage
     
     var publicName: String = "Grade 9 Linear Algebra Practice"
     

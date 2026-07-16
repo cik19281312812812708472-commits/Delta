@@ -15,6 +15,7 @@ class FrenchPractise: Package {
     func saveQuestion(question: TestCreation.Question) -> TestCreation.DescriptionOfQuestion {
         DescriptionOfQuestion(ownerInternalName: internalName, question: question)
     }
+    var packageType: PackageTypes = .languagePackage
     
     var publicName: String = "French Conjugation"
     

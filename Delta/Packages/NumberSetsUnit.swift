@@ -20,6 +20,7 @@ class NumberSetsUnit: Package, ObservableObject {
         createQuestion()
     }
     
+    var packageType: PackageTypes = .mathPackage
     
     var publicName: String = "Number Sets & Mathematical Notation"
     

@@ -9,6 +9,9 @@ import TestCreation
 import Combine
 
 class MathPract: Package {
+    
+    var packageType: PackageTypes = .mathPackage
+    
     var publicName: String = "Math Practise"
     
     var internalName: String = ""

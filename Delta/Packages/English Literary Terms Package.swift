@@ -304,7 +304,8 @@ class EnglishLitTerm: Package {
     
     @Published var allChangbleDoubles: [doubleSetting] = []
 
-   
+    var packageType: PackageTypes = .spokenLanguagePackage
+    
     let publicName: String = "English Literary Terms"
     
     let internalName: String = "The English Literary Terms"

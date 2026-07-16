@@ -39,6 +39,8 @@ class examplePackage: Package {
     
     @Published var allChangbleDoubles: [doubleSetting] = []
 
+    var packageType: PackageTypes = .highLevelMathPackage
+    
     let publicName: String = "example package"
     
     let internalName: String = "Example Package. Linear System Creator"

@@ -17,6 +17,10 @@ class ChemistryUnit1: Package, ObservableObject {
     func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
         createQuestion()
     }
+    
+    
+    var packageType: PackageTypes = .sciencePackage
+    
     var publicName: String = "SNC1W Chemistry Unit"
     
     var internalName: String = "chemistryUnit1"

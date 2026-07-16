@@ -62,13 +62,13 @@ struct ArchiveTestButton: View {
                 switch testSavingState {
                 case .notSaving:
                     Text("Archive Test")
-                        .hoverEffect($isHovering, cornerRadius: 12)
+                        
                 case .saving:
                     Text("Archiving")
-                        .hoverEffect($isHovering, cornerRadius: 12)
+                        
                 case .saved:
                     Text("Archived!")
-                        .hoverEffect($isHovering, cornerRadius: 12)
+                       
                 }
                 
                 
@@ -76,24 +76,21 @@ struct ArchiveTestButton: View {
             
             .animation(.smooth, value: true)
             .background(
-                RoundedRectangle(cornerRadius: 12)
+                RoundedRectangle(cornerRadius: 8)
                     .fill(colorScheme == .light ? generalData.getWhite(240): generalData.idealBlack)
                     
                     .stroke(generalData.getWhite(240), lineWidth: generalData.idealButtonLineWidth)
                     .frame(width: geo.size.width * 0.11, height: geo.size.height * 0.03)
-                    .hoverEffect($isHovering, cornerRadius: 12)
                     .contextMenu {
                         Text("Help")
                         Divider()
                         Text("This saves this test. So it can be used again.")
                     }
             )
+            .hoverEffect(width: geo.size.width * 0.11, height: geo.size.height * 0.03, cornerRadius: 8)
             .shadow(color: generalData.getShadowColor().opacity(generalData.idealShadowOpacity), radius: 7, x: 1, y: 1)
         }
-        .onHover() { hovering in
-            isHovering = hovering
-            print(hovering)
-        }
+        
         .buttonStyle(.plain)
         
     }

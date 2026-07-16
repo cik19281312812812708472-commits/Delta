@@ -27,6 +27,11 @@ struct DeltaApp: App {
         
         _generalData = StateObject(wrappedValue: generalData)
         
+        #if os(iOS)
+        
+        testManager.iOSSetUp()
+        appManager.iOSSetup()
+        #endif
         
     }
     

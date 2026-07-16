@@ -10,6 +10,8 @@ import Combine
 
 class PeriodicTable: Package {
     
+    var packageType: PackageTypes = .sciencePackage
+    
     var publicName: String = "Periodic Table"
     
     var internalName: String = ""

@@ -22,6 +22,8 @@ class PolynomialPackage: ObservableObject, Package {
     // MARK: Identity
     let id = UUID()
 
+    var packageType: PackageTypes = .mathPackage
+    
     let publicName = "Polynomials"
     let internalName = "polynomial_generator"
 

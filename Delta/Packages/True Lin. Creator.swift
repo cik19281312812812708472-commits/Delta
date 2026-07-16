@@ -20,6 +20,7 @@ class LinearSystemCreator: Package, ObservableObject {
         
     }
     
+    var packageType: PackageTypes = .mathPackage
     
     var publicName: String = "Linear System Creator"
     

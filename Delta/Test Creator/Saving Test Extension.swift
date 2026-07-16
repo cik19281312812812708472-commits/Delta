@@ -47,6 +47,23 @@ extension TestManager {
     //what does it mean
     
    
+    func setLastTestName() {
+        
+        var bundleID = Bundle.main.bundleIdentifier ?? "Delta"
+        
+        let lastTestURL = findURLinAppSupport()
+            .appendingPathComponent(bundleID)
+            .appendingPathComponent("Last Test")
+            .appendingPathComponent(testName)
+            .appendingPathExtension("deltaTest")
+        
+        
+        FileManager.default.createFile(atPath: lastTestURL.path, contents: nil)
+        
+        
+    }
+    
+    
     
     func saveTest() {
         savedTest = false

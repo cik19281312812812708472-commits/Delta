@@ -58,7 +58,7 @@ class EuclideanGeo: Package {
     @Published var allChangbleDoubles: [doubleSetting] = [doubleSetting(double: 0.0, name: "stuff")]
     
     
-    
+    var packageType: PackageTypes = .mathPackage
     
     let publicName: String = "Euclidean Geometry"
     

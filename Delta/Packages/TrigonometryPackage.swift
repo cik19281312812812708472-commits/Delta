@@ -23,6 +23,7 @@ class TrigonometryPackage: ObservableObject, Package {
     // MARK: Identity
     let id = UUID()
 
+    var packageType: PackageTypes = .highLevelMathPackage
     let publicName = "Trigonometry"
     let internalName = "trigonometry"
 

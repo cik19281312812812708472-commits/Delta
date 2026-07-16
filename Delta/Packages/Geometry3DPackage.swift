@@ -13,6 +13,9 @@ import Combine
 
 class Geometry3DPackage: Package {
     // Protocol Conformances
+    
+    var packageType: PackageTypes = .mathPackage
+    
     let publicName = "3D Geometry: Volume & Surface Area"
     let internalName = "com.geometry.volume.surfacearea"
     @Published var packageDescription = "Generates procedural questions regarding the volume and surface area of cylinders, cones, and spheres."

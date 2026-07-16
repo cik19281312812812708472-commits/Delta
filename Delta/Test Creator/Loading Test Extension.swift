@@ -11,7 +11,7 @@ import TestCreation
 extension TestManager {
     
     
-    private func findTestName(_ test: String) -> String {
+    func findTestName(_ test: String) -> String {
         
            
            var testChars: [Character] = Array(test).reversed()

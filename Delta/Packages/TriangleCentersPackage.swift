@@ -19,6 +19,7 @@ class TriangleCentersPackage: Package {
     
     
     // MARK: - Package Protocol Properties
+    var packageType: PackageTypes = .mathPackage
     let publicName: String = "Triangle Centers & Concurrency"
     let internalName: String = "TriangleCentersPackage"
     

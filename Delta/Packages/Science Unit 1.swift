@@ -18,6 +18,8 @@ class ScienceUnit1: Package, ObservableObject {
         DescriptionOfQuestion(ownerInternalName: internalName, question: question)
     }
     
+    var packageType: PackageTypes = .sciencePackage
+    
     var publicName: String = "Science Space Unit"
     
     var internalName: String = "scienceUnit1"
