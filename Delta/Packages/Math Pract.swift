@@ -14,7 +14,7 @@ class MathPract: Package {
     
     var publicName: String = "Math Practise"
     
-    var internalName: String = ""
+    var internalName: String = "mathpract"
     
     var packageDescription: String = ""
     
@@ -26,7 +26,7 @@ class MathPract: Package {
     
     var allChangbleDoubles: [TestCreation.doubleSetting] = []
     
-    var allQuestions: [Question] = []
+    var allQuestions: [lightQuestion] = []
     
     var allOmmittedQuestions: [String] = []
     
@@ -100,9 +100,9 @@ class MathPract: Package {
                 allQuestions = allQuestions + allQuestions
             }
             
-            var question = allQuestions[i]
+            let question = giveActualQuestion(allQuestions[i])
             //this is here so that the id is not reused when the allQuestions is duplicated
-            question.id = UUID()
+            
             allQuestion.append(question)
         }
         return allQuestion
@@ -110,7 +110,17 @@ class MathPract: Package {
     
     func createQuestion() -> TestCreation.Question {
         loadAllQuestions()
-        return allQuestions.randomElement()!
+        
+        return giveActualQuestion(allQuestions.randomElement()!)
+    }
+    
+    func giveActualQuestion(_ lightQuestion: lightQuestion) -> Question {
+        
+        var question = Question(creator: self.id, questionName: lightQuestion.questionWords, questionText: lightQuestion.questionDescription, questionContent: QuestionContent{Text(lightQuestion.questionWords)}, questionContentSizeX: 100, questionContentSizeY: 100, questionAnswer: lightQuestion.answer)
+         
+         question.id = UUID()
+        
+        return question
     }
     
     func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
@@ -121,7 +131,7 @@ class MathPract: Package {
     func loadAllQuestions() {
        
       
-        var allQuestion: [Question] = []
+        var allQuestion: [lightQuestion] = []
         let allPossibleQuestions = allPossibleQuestions.allCases
         for questionCase in allPossibleQuestions {
             
@@ -129,11 +139,10 @@ class MathPract: Package {
             
             guard !allOmmittedQuestions.contains(lightQuestion.questionWords) else { continue }
           
-            let question = Question(creator: self.id, questionName: lightQuestion.questionWords, questionText: lightQuestion.questionDescription, questionContent: QuestionContent{Text(lightQuestion.questionWords)}, questionContentSizeX: 100, questionContentSizeY: 100, questionAnswer: lightQuestion.answer)
             
            
             
-            allQuestion.append(question)
+            allQuestion.append(lightQuestion)
             
         }
         

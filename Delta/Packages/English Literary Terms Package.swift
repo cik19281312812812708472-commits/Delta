@@ -298,19 +298,21 @@ class EnglishLitTerm: Package {
     
     
     var packageDescription: String = "This package will create questions on the definitions on English Literary Terms the same ones given here: https://docs.google.com/document/d/1B-4kjahK83LZ1aj2HCqrFVruTDCtU2S1qECsInZdLKM/edit?authuser=0&usp=classroom_web"
-    @Published var allChangbleBools: [boolSetting] = []
+     var allChangbleBools: [boolSetting] = []
     
-    @Published var allChangbleInts: [intSetting] = [intSetting(int: 15, name: "Number Of Questions created By this package")]
+     var allChangbleInts: [intSetting] = [intSetting(int: 15, name: "Number Of Questions created By this package")]
     
-    @Published var allChangbleDoubles: [doubleSetting] = []
+     var allChangbleDoubles: [doubleSetting] = []
 
     var packageType: PackageTypes = .spokenLanguagePackage
     
-    let publicName: String = "English Literary Terms"
+    var publicName: String = "English Literary Terms"
     
-    let internalName: String = "The English Literary Terms"
+    var internalName: String = "The English Literary Terms"
     
-    let id = UUID()
+    var id = UUID()
+    
+    
     
     var numberOfQuestionsPerSection: Int = 15
     

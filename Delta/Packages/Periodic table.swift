@@ -28,7 +28,7 @@ class PeriodicTable: Package {
     
     var loadedAllQuestions: Bool = false
     
-    var allQuestions: [Question] = []
+    var allQuestions: [lightQuestion] = []
     
     var allOmmittedQuestions: [String] = []
     
@@ -94,8 +94,8 @@ class PeriodicTable: Package {
             if i > allQuestions.count - 1 {
                 allQuestions = allQuestions + allQuestions
             }
-            var question = allQuestions[i]
-            question.id = UUID()
+            let question = giveActualQuestion(allQuestions[i])
+          
             allQuestion.append(question)
         }
         return allQuestion
@@ -103,7 +103,8 @@ class PeriodicTable: Package {
     
     func createQuestion() -> TestCreation.Question {
         loadAllQuestions()
-        return allQuestions.randomElement()!
+        
+        return giveActualQuestion(allQuestions.randomElement()!)
     }
     
     func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
@@ -114,7 +115,7 @@ class PeriodicTable: Package {
     func loadAllQuestions() {
        
       
-        var allQuestion: [Question] = []
+        var allQuestion: [lightQuestion] = []
         let allPossibleQuestions = allPossibleQuestions.allCases
         for questionCase in allPossibleQuestions {
             
@@ -122,15 +123,27 @@ class PeriodicTable: Package {
             
             guard !allOmmittedQuestions.contains(lightQuestion.questionWords) else { continue }
          
-            var question = Question(creator: self.id, questionName: lightQuestion.questionWords, questionText: "What is the defining feature of this Group?", questionContent: QuestionContent{Text(lightQuestion.questionWords)}, questionContentSizeX: 100, questionContentSizeY: 100, questionAnswer: lightQuestion.answer)
             
-            question.id = UUID()
-            allQuestion.append(question)
+           // var question = Question(creator: self.id, questionName: lightQuestion.questionWords, questionText: "What is the defining feature of this Group?", questionContent: QuestionContent{Text(lightQuestion.questionWords)}, questionContentSizeX: 100, questionContentSizeY: 100, questionAnswer: lightQuestion.answer)
+            
+            //question.id = UUID()
+            allQuestion.append(lightQuestion)
             
         }
         
         allQuestions = allQuestion
-        if allQuestions[allQuestions.count - 1].questionName == "Alkali" {print("yes")}
+        
+        //if allQuestions[allQuestions.count - 1].questionName == "Alkali" { print("yes") }
+        
+    }
+    
+    func giveActualQuestion(_ lightQuestion: lightQuestion) -> Question {
+        
+        var question = Question(creator: self.id, questionName: lightQuestion.questionWords, questionText: "What is the defining feature of this Group?", questionContent: QuestionContent{Text(lightQuestion.questionWords)}, questionContentSizeX: 100, questionContentSizeY: 100, questionAnswer: lightQuestion.answer)
+         
+         question.id = UUID()
+        
+        return question
     }
     
     
@@ -253,9 +266,6 @@ class PeriodicTable: Package {
     init() {
         setup()
     }
-    
-    
-    
     
     
 }

@@ -32,19 +32,19 @@ class examplePackage: Package {
     }
     
 
-    @Published var packageDescription: String = ""
-    @Published var allChangbleBools: [boolSetting] = []
+     var packageDescription: String = ""
+     var allChangbleBools: [boolSetting] = []
     
-    @Published var allChangbleInts: [intSetting] = []
+     var allChangbleInts: [intSetting] = []
     
-    @Published var allChangbleDoubles: [doubleSetting] = []
+     var allChangbleDoubles: [doubleSetting] = []
 
     var packageType: PackageTypes = .highLevelMathPackage
     
-    let publicName: String = "example package"
+    var publicName: String = "example package"
     
-    let internalName: String = "Example Package. Linear System Creator"
-    let id = UUID()
+    var internalName: String = "Example Package. Linear System Creator"
+    var id = UUID()
     
     
     
@@ -191,7 +191,7 @@ class examplePackage: Package {
             
             let xCof1 = mathEquationBlueprint.factor(topBase: xCof1String, bottomBase: "1", squareRoot: false)
             firstTerm = mathEquationBlueprint.Term(sign: .positive, factors: [xCof1, xVar])
-//MARK: make elim the pos when at hte farthest
+
             var secondTerm: mathEquationBlueprint.Term
             
             let yVar = mathEquationBlueprint.factor(topBase: "y", bottomBase: "1", squareRoot: false)

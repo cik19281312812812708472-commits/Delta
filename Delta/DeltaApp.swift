@@ -28,9 +28,9 @@ struct DeltaApp: App {
         _generalData = StateObject(wrappedValue: generalData)
         
         #if os(iOS)
-        
-        testManager.iOSSetUp()
         appManager.iOSSetup()
+        testManager.iOSSetUp()
+        
         #endif
         
     }
@@ -42,13 +42,20 @@ struct DeltaApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                
                 .onOpenURL { url in
                     
                     
                     if url.pathExtension == "deltaTest" {
                         appState.appState = .Tests
                         appState.testState = .selectingPackages
+                        //print("name: ", url.deletingPathExtension().lastPathComponent)
+                        testManager.loadTestData(name: url.deletingPathExtension().lastPathComponent, url)
+                        testManager.loadTest()
+                        
+                        testManager.testURLOrigin = url
                     }
+                    
                     
                 }
                 .environmentObject(appState)
@@ -57,6 +64,7 @@ struct DeltaApp: App {
                
                 
         }
+        
         
     }
 }

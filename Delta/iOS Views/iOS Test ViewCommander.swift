@@ -17,14 +17,16 @@ struct iOSTestViewCommander: View {
        switch appManager.testState {
            
        case .runningTest:
-           Text("")
+           RunningTestView()
        case .selectingPackages:
            iOSPackageSelection()
        case .testEnded:
            Text("")
        case .testSettings:
-           Text("")
-           
+           iOSTestSettings()
+    
+       case .previewQuestions:
+           iOSQuestionsView()
            
        }
      

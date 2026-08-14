@@ -36,10 +36,14 @@ enum appStateBlueprint {
 enum testStateBlueprint {
     
     case selectingPackages
-    
+   
     ///This is only meant for iOS macOS doesn't use this.
     ///This just 
     case testSettings
+    
+    //this is only meant for iOS
+    case previewQuestions
+   
     
     case runningTest
     case testEnded
@@ -58,12 +62,19 @@ enum testStateBlueprint {
             return ""
         case .testEnded:
             return ""
+        case .previewQuestions:
+            return ""
         }
     }
     
 }
 
-
+enum iOSTestSettingsStates {
+    
+    case showingQuestions
+    
+    
+}
 
 
 
@@ -74,9 +85,11 @@ class AppManager: ObservableObject {
     
     @Published var appVersion: versionData_Type = versionData_Type(Major: 0, Minor: 2, Patch: 7)
     @Published var isLoading: Bool = false
-    @Published var appState: appStateBlueprint = .Tests // .startingScreen
+    @Published var appState: appStateBlueprint = .Tests // .startingscreen MARK: Set this back
     //it should always set the test state to selecting packages at first
     @Published var testState: testStateBlueprint = .selectingPackages
+    @Published var testCreationTestState: testStateBlueprint = .selectingPackages
+    
     
     /// in teh furture this will be loaded from a JSON as of now i will manually add them.
     @Published var allPackages: [any Package] = [EnglishLitTerm(),  ScienceUnit1(), LinearSystemCreator(), ChemistryUnit1(), TrigonometryPackage(), PolynomialPackage(), AlgebraUnit1(), FrenchPractise(), NumberSetsUnit(), TriangleCentersPackage(), Geometry3DPackage(), PeriodicTable(), MathPract()
@@ -92,6 +105,9 @@ class AppManager: ObservableObject {
         
     }
     
+    init() {
+        self.allPackages.sort { $0.publicName < $1.publicName }
+    }
     
     
 }

@@ -21,6 +21,7 @@ struct LoadTestButton: View {
     @State private var isHovering: Bool = false
     
     var geo: GeometryProxy
+    var oniOS: Bool
     
     var body: some View {
         
@@ -32,19 +33,12 @@ struct LoadTestButton: View {
             
         } label: {
             
-            ZStack {
-              Text("Load Archived Tests")
+            if oniOS {
+                ButtonLabel(oniOS: oniOS, geo: geo)
+            } else {
+                ButtonLabel(oniOS: oniOS, geo: geo)
+                .hoverEffect(width: geo.size.width * 0.11, height: geo.size.height * 0.03, cornerRadius: 8, darkOpacity: oniOS ? 0.0 : 0.3, opacity: oniOS ? 0.0 : 0.3)
             }
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(colorScheme == .light ? generalData.getWhite(240) : generalData.idealBlack)
-                    .stroke(generalData.getWhite(240), lineWidth: generalData.idealButtonLineWidth)
-                    .frame(width: geo.size.width * 0.11, height: geo.size.height * 0.03)
-                    
-                )
-            
-            .shadow(color: generalData.getShadowColor().opacity(generalData.idealShadowOpacity), radius: 7, x: 1, y: 1)
-            .hoverEffect(width: geo.size.width * 0.11, height: geo.size.height * 0.03, cornerRadius: 8)
         }
         .buttonStyle(.plain)
         .onAppear() {
@@ -67,7 +61,7 @@ struct LoadTestButton: View {
                         
                         
                         ForEach(testManager.allTestNames, id: \.self) { testName in
-                            TestButton(testName: testName, geo: sheetGeo)
+                            TestButton(oniOS: oniOS, testName: testName, geo: sheetGeo)
                             Spacer()
                         }
                     }
@@ -88,15 +82,45 @@ struct LoadTestButton: View {
                 }
                 
             }
-            .frame(width: geo.size.width * 0.5, height: geo.size.height * 0.5) // the size of the sheet
+            .frame(width: oniOS ? geo.size.width : geo.size.width * 0.5, height: oniOS ? geo.size.height : geo.size.height * 0.5) // the size of the sheet
         }
         
     }
     
     
-    init(geo: GeometryProxy) {
+    init(geo: GeometryProxy, oniOS: Bool) {
         self.geo = geo
+        self.oniOS = oniOS
     }
+    
+    private struct ButtonLabel: View {
+        
+        @Environment(\.colorScheme) var colorScheme: ColorScheme
+        
+        @EnvironmentObject var generalData: GeneralData
+        
+        var oniOS: Bool
+        var geo: GeometryProxy
+        
+        var body: some View {
+            ZStack {
+              Text("Load Archived Tests")
+            }
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(colorScheme == .light ? generalData.getWhite(240) : generalData.idealBlack)
+                    .stroke(generalData.getWhite(240), lineWidth: generalData.idealButtonLineWidth)
+                    .frame(width: oniOS ? geo.size.width * 0.67 : geo.size.width * 0.11, height: oniOS ? geo.size.height * 0.05 : geo.size.height * 0.03)
+                    
+                )
+            
+            .shadow(color: generalData.getShadowColor().opacity(generalData.idealShadowOpacity), radius: 7, x: 1, y: 1)
+        }
+        
+        
+    }
+    
+    
     
 }
 
@@ -110,7 +134,7 @@ extension LoadTestButton {
         @EnvironmentObject var testManager: TestManager
         @Environment(\.colorScheme) var colorScheme
         
-        
+        var oniOS: Bool 
         var testName: String
         var geo: GeometryProxy
         
@@ -149,7 +173,7 @@ extension LoadTestButton {
                             Image(systemName: "chart.line.text.clipboard")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: geo.size.width * 0.03, height: geo.size.width * 0.03)
+                                .frame(width: oniOS ? geo.size.width * 0.1 : geo.size.width * 0.03, height: oniOS ? geo.size.width * 0.1 : geo.size.width * 0.03)
                             
                             
                             Text(testName)
@@ -162,15 +186,16 @@ extension LoadTestButton {
                 }
                 .contextMenu {
                     Button("Delete Test") {
-                        testManager.deleteTest(testName: testName)
-                        
+                        withAnimation(.smooth) {
+                            testManager.deleteTest(testName: testName)
+                        }
                     }
                 }
                 //.hoverEffect(cornerRadius: 8)
                 .buttonStyle(.plain)
                 
             }
-            .frame(width: geo.size.width * 0.2, height: geo.size.height * 0.102)
+            .frame(width: oniOS ? geo.size.width * 0.5 : geo.size.width * 0.2, height: geo.size.height * 0.102)
            
             
             

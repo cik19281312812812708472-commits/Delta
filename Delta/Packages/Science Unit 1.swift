@@ -34,13 +34,13 @@ THIS PACKAGE HAS SOME MISSING QUESTIONS AND ANSWERS
     
     var id = UUID()
     
-    @Published var allChangbleBools: [boolSetting] = [boolSetting(bool: false, name: "Randomize questions?")]
+    var allChangbleBools: [boolSetting] = [boolSetting(bool: false, name: "Randomize questions?")]
     
-    @Published var numberOfQuestionsMadePerSection: Int = 37
+    var numberOfQuestionsMadePerSection: Int = 37
     
-    @Published var allChangbleInts: [intSetting] = [intSetting(int: 37, name: "Number of questions per section")]
+    var allChangbleInts: [intSetting] = [intSetting(int: 37, name: "Number of questions per section")]
     
-    @Published var allChangbleDoubles: [doubleSetting] = []
+    var allChangbleDoubles: [doubleSetting] = []
   
     var alllightQuestions: [lightQuestion] = []
     var randomizeQuestions: Bool = false

@@ -20,17 +20,17 @@ class TriangleCentersPackage: Package {
     
     // MARK: - Package Protocol Properties
     var packageType: PackageTypes = .mathPackage
-    let publicName: String = "Triangle Centers & Concurrency"
-    let internalName: String = "TriangleCentersPackage"
+    var publicName: String = "Triangle Centers & Concurrency"
+    var internalName: String = "TriangleCentersPackage"
     
     var packageDescription: String = "Converted from your custom allQuestionsMath enum and questionBlueprint code into a standard Package model."
     
-    let id = UUID()
+    var id = UUID()
     
     // Settings arrays required by the protocol
-    @Published var allChangbleBools: [boolSetting] = []
-    @Published var allChangbleInts: [intSetting] = []
-    @Published var allChangbleDoubles: [doubleSetting] = []
+    var allChangbleBools: [boolSetting] = []
+    var allChangbleInts: [intSetting] = []
+    var allChangbleDoubles: [doubleSetting] = []
     
     // MARK: - Initializer & Setup
     init() {

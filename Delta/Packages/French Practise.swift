@@ -9,19 +9,16 @@ import TestCreation
 import Combine
 
 class FrenchPractise: Package {
-    func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
-        createQuestion()
-    }
-    func saveQuestion(question: TestCreation.Question) -> TestCreation.DescriptionOfQuestion {
-        DescriptionOfQuestion(ownerInternalName: internalName, question: question)
-    }
+    
+   
+    
     var packageType: PackageTypes = .languagePackage
     
     var publicName: String = "French Conjugation"
     
     var internalName: String = "FrenchPractise"
     
-    var packageDescription: String = "A package to practise french conjugation. This is semi helped by AI get the data for conjugatio questions, the rest is human."
+    var packageDescription: String = "A package to practise french conjugation. Artificial Intelligence was used to expand the amount of conjugations possible, each conjugation has been reviewed by a human."
     
     var id: UUID = UUID()
     
@@ -31,7 +28,7 @@ class FrenchPractise: Package {
     
     var allChangbleDoubles: [TestCreation.doubleSetting] = []
     
-    var allQuestions: [Question] = []
+    var allQuestions: [lightQuestion] = []
     var createdAllQuestions: Bool = false
     var createdAllSettings: Bool = false
     
@@ -50,7 +47,7 @@ class FrenchPractise: Package {
       
             for question in allQuestions {
                 
-                let newBoolSetting = boolSetting(bool: false, name: "Ommit question \"\(question.questionText)\"")
+                let newBoolSetting = boolSetting(bool: false, name: "Ommit question \"\(question.questionWords)\"")
                // print(newBoolSetting)
                 allChangbleBools.append(newBoolSetting)
                 //print(allChangbleBools)
@@ -58,6 +55,7 @@ class FrenchPractise: Package {
           
         
     }
+    
     func setup() {
         createAllQuestions()
         createRestofSettings()
@@ -78,18 +76,39 @@ class FrenchPractise: Package {
            
             let theQuestion = question.Question
             
-            let content = QuestionContent {}
+            let actualLightQuestion: lightQuestion = lightQuestion(questionWords: "Conjugate: \(theQuestion.Verb) | for \(theQuestion.Noun)", answer: theQuestion.Answer)
             
-            let trueQuestion = Question(creator: self.id, questionName: "", questionText: "Conjugate: \(theQuestion.Verb) | for \(theQuestion.Noun)", questionContent: content, questionContentSizeX: 0, questionContentSizeY: 0, questionAnswer: theQuestion.Answer)
-            
-            
-            allQuestions.append(trueQuestion)
+            allQuestions.append(actualLightQuestion)
             
             
         }
         createdAllQuestions = true
     }
     
+    func giveActualQuestions(_ lightQuestion: lightQuestion) -> Question {
+        
+        let content = QuestionContent {}
+        
+        var trueQuestion = Question(creator: self.id, questionName: "", questionText: lightQuestion.questionWords, questionContent: content, questionContentSizeX: 0, questionContentSizeY: 0, questionAnswer: lightQuestion.answer)
+        
+        trueQuestion.letTestManagerCreateDescriptionOfQuestion = false
+        
+        return trueQuestion
+    }
+    
+    func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
+        
+        
+        let question: Question = Question(creator: self.id, questionName: "", questionText: descriptionOfQuestion.questionText, questionContent: QuestionContent {}, questionContentSizeX: 0, questionContentSizeY: 0, questionAnswer: descriptionOfQuestion.questionAnswer)
+        
+        return question
+    }
+    
+    func saveQuestion(question: TestCreation.Question) -> TestCreation.DescriptionOfQuestion {
+        
+        
+        DescriptionOfQuestion(ownerInternalName: internalName, question: question)
+    }
     func createSection(numOfQuestions: Int) -> [TestCreation.Question] {
         
     
@@ -113,7 +132,7 @@ class FrenchPractise: Package {
             
             
             if allChangbleBools[i].bool == false {
-                section.append(allQuestions[i])
+                section.append(giveActualQuestions(allQuestions[i]))
                 
             }
             
@@ -133,7 +152,7 @@ class FrenchPractise: Package {
     
     func createQuestion() -> TestCreation.Question {
         
-        return allQuestions.randomElement()!
+        return giveActualQuestions(allQuestions.randomElement()!)
     }
     
     

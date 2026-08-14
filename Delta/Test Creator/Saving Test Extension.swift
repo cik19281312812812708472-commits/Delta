@@ -46,10 +46,11 @@ extension Array where Element == Question {
 extension TestManager {
     //what does it mean
     
-   
+   ///This sets the last test name.
+   ///The last test will be loaded.
     func setLastTestName() {
         
-        var bundleID = Bundle.main.bundleIdentifier ?? "Delta"
+        let bundleID = Bundle.main.bundleIdentifier ?? "Delta"
         
         let lastTestURL = findURLinAppSupport()
             .appendingPathComponent(bundleID)
@@ -249,24 +250,37 @@ extension TestManager {
         //creating URL for test to save
         let fileManager = FileManager.default
         
-        guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
-            fatalError("Failed to find app support.")
+        if testURLOrigin == nil {
+            guard let appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+                fatalError("Failed to find app support.")
+            }
+            
+            let bundleID = Bundle.main.bundleIdentifier ?? "Delta"
+            let savedTestsURL = appSupportURL.appendingPathComponent(bundleID).appendingPathComponent("SavedTests")
+            
+            let fileURL = savedTestsURL.appendingPathComponent("\(testName).deltaTest")
+            
+            do {
+                try fileManager.createDirectory(at: savedTestsURL, withIntermediateDirectories: true, attributes: nil)
+                try trueTestToSave.write(to: fileURL, options: .atomic)
+                
+            } catch {
+                
+            }
+        } else {
+            
+            do {
+                //try fileManager.createDirectory(at: testURLOrigin!, withIntermediateDirectories: true, attributes: nil)
+                try trueTestToSave.write(to: testURLOrigin!, options: .atomic)
+                
+            } catch {
+                
+            }
+            
+            
         }
         
-        let bundleID = Bundle.main.bundleIdentifier ?? "Delta"
-        let savedTestsURL = appSupportURL.appendingPathComponent(bundleID).appendingPathComponent("SavedTests")
-        
-        let fileURL = savedTestsURL.appendingPathComponent("\(testName).deltaTest")
-        
-        do {
-            try fileManager.createDirectory(at: savedTestsURL, withIntermediateDirectories: true, attributes: nil)
-            try trueTestToSave.write(to: fileURL, options: .atomic)
-            
-        } catch {
-            
-        }
-        
-       savedTest = true 
+       savedTest = true
         
         print("~~~~~")
         print("Test TO SAVE: ", testToSave)

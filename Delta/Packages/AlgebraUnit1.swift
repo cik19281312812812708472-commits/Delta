@@ -5,30 +5,51 @@
 //  Created by Desire on 2026-05-26.
 //
 
-
 import SwiftUI
 import Foundation
 import Combine
 import TestCreation
 
-class AlgebraUnit1: Package, ObservableObject {
+class AlgebraUnit1: Package, ObservableObject, Codable {
     
-   
+    // MARK: - Codable Keys
+    private enum CodingKeys: String, CodingKey {
+        case publicName
+        case internalName
+        case packageDescription
+        case id
+        case allChangbleBools
+        case numberOfQuestionsMadePerSection
+        case allChangbleInts
+        case allChangbleDoubles
+        case randomizeQuestions
+        case generatedAllCases
+        case questionNum
+    }
     
+    // MARK: - Question Persistence
     func saveQuestion(question: TestCreation.Question) -> TestCreation.DescriptionOfQuestion {
-        DescriptionOfQuestion(ownerInternalName: internalName, question: question)
+        DescriptionOfQuestion(
+            ownerInternalName: internalName,
+            question: question,
+            questionIndex: self.questionNum
+        )
     }
+    
     func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
-        createQuestion()
+        // Match saved question by case ID/Name or text back to enum case
+        if let matchingCase = allQuestions.allCases.first(where: { $0.id == descriptionOfQuestion.questionName || $0.questionWords == descriptionOfQuestion.questionText }) {
+            return buildQuestion(from: matchingCase)
+        }
+        
+        // Fallback if matching case is not found directly
+        return createQuestion()
     }
     
-    
+    // MARK: - Package Properties
     var packageType: PackageTypes = .mathPackage
-    
     var publicName: String = "Grade 9 Linear Algebra Practice"
-    
     var internalName: String = "algebraUnit1"
-    
     var packageDescription: String = """
     This package covers core algebraic mechanics, including simplifying like terms, the distributive property, solving multi-step linear equations, and modeling linear word problems.
     
@@ -38,19 +59,53 @@ class AlgebraUnit1: Package, ObservableObject {
     
     var id = UUID()
     
-    @Published var allChangbleBools: [boolSetting] = [boolSetting(bool: false, name: "Randomize questions?")]
+    var allChangbleBools: [boolSetting] = [boolSetting(bool: false, name: "Randomize questions?")]
+    var numberOfQuestionsMadePerSection: Int = 20
+    var allChangbleInts: [intSetting] = [intSetting(int: 20, name: "Number of questions per section")]
+    var allChangbleDoubles: [doubleSetting] = []
     
-    @Published var numberOfQuestionsMadePerSection: Int = 20
-    
-    @Published var allChangbleInts: [intSetting] = [intSetting(int: 20, name: "Number of questions per section")]
-    
-    @Published var allChangbleDoubles: [doubleSetting] = []
-  
+    // Non-codable or dynamic runtime state
     var shuffledCases: [allQuestions] = []
     var randomizeQuestions: Bool = false
     var generatedAllCases: Bool = false
     var questionNum: Int = 0
     
+    // MARK: - Initializers
+    public init() {}
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.publicName = try container.decode(String.self, forKey: .publicName)
+        self.internalName = try container.decode(String.self, forKey: .internalName)
+        self.packageDescription = try container.decode(String.self, forKey: .packageDescription)
+        self.id = try container.decode(UUID.self, forKey: .id)
+        self.allChangbleBools = try container.decode([boolSetting].self, forKey: .allChangbleBools)
+        self.numberOfQuestionsMadePerSection = try container.decode(Int.self, forKey: .numberOfQuestionsMadePerSection)
+        self.allChangbleInts = try container.decode([intSetting].self, forKey: .allChangbleInts)
+        self.allChangbleDoubles = try container.decode([doubleSetting].self, forKey: .allChangbleDoubles)
+        self.randomizeQuestions = try container.decode(Bool.self, forKey: .randomizeQuestions)
+        self.generatedAllCases = try container.decode(Bool.self, forKey: .generatedAllCases)
+        self.questionNum = try container.decode(Int.self, forKey: .questionNum)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(publicName, forKey: .publicName)
+        try container.encode(internalName, forKey: .internalName)
+        try container.encode(packageDescription, forKey: .packageDescription)
+        try container.encode(id, forKey: .id)
+        try container.encode(allChangbleBools, forKey: .allChangbleBools)
+        try container.encode(numberOfQuestionsMadePerSection, forKey: .numberOfQuestionsMadePerSection)
+        try container.encode(allChangbleInts, forKey: .allChangbleInts)
+        try container.encode(allChangbleDoubles, forKey: .allChangbleDoubles)
+        try container.encode(randomizeQuestions, forKey: .randomizeQuestions)
+        try container.encode(generatedAllCases, forKey: .generatedAllCases)
+        try container.encode(questionNum, forKey: .questionNum)
+    }
+
+    // MARK: - Logic
     func updateInternalSettings() {
         numberOfQuestionsMadePerSection = allChangbleInts[0].int
         randomizeQuestions = allChangbleBools[0].bool
@@ -102,40 +157,44 @@ class AlgebraUnit1: Package, ObservableObject {
         }
         
         let currentCase = cases[questionNum]
-        
-        // Handle math type initialization versus text type initialization
-        let trueQuestion: Question
-        if currentCase.questionType == .math {
-            trueQuestion = Question(
-                creator: self.id, questionName: "",
-                questionType: .math,
-                questionText: currentCase.questionWords,
-                questionContent: currentCase.questionContent,
-                questionContentSizeX: 500,
-                questionContentSizeY: 500,
-                questionAnswer: ""//currentCase.mathAnswer
-            )
-        } else {
-            trueQuestion = Question(
-                creator: self.id, questionName: "",
-                questionType: .text,
-                questionText: currentCase.questionWords,
-                questionContent: currentCase.questionContent,
-                questionContentSizeX: 500,
-                questionContentSizeY: 500,
-                questionAnswer: currentCase.textAnswer
-            )
-        }
+        let trueQuestion = buildQuestion(from: currentCase)
         
         self.questionNum += 1
         return trueQuestion
+    }
+
+    private func buildQuestion(from questionCase: allQuestions) -> TestCreation.Question {
+        if questionCase.questionType == .math {
+            return Question(
+                creator: self.id,
+                questionName: questionCase.id,
+                questionType: .math,
+                questionText: questionCase.questionWords,
+                questionContent: questionCase.questionContent,
+                questionContentSizeX: 500,
+                questionContentSizeY: 500,
+                questionAnswer: "" //questionCase.mathAnswer
+            )
+        } else {
+            return Question(
+                creator: self.id,
+                questionName: questionCase.id,
+                questionType: .text,
+                questionText: questionCase.questionWords,
+                questionContent: questionCase.questionContent,
+                questionContentSizeX: 500,
+                questionContentSizeY: 500,
+                questionAnswer: questionCase.textAnswer
+            )
+        }
     }
     
     func filterAnswer(answer: String) -> String {
         return answer.lowercased().trimmingCharacters(in: .whitespacesAndNewlines).replacingOccurrences(of: " ", with: "")
     }
     
-    enum allQuestions: CaseIterable {
+    // MARK: - Questions Enum
+    enum allQuestions: String, CaseIterable {
         // MARK: - Combining Like Terms
         case simplifyBasic
         case simplifyWithExponents
@@ -156,6 +215,8 @@ class AlgebraUnit1: Package, ObservableObject {
         // MARK: - Algebraic Word Modeling
         case wordProblemAges
         case wordProblemTaxi
+        
+        var id: String { self.rawValue }
         
         var questionType: QuestionType {
             switch self {
@@ -282,35 +343,30 @@ class AlgebraUnit1: Package, ObservableObject {
         var mathAnswer: mathEquationBlueprint {
             switch self {
             case .solveOneStepAdd:
-                // x = 8
                 return mathEquationBlueprint(
                     leftSide: [mathEquationBlueprint.Term(sign: .positive, factors: [mathEquationBlueprint.factor(topBase: "x", bottomBase: "1", squareRoot: false)])],
                     relation: .equal,
                     rightSide: [mathEquationBlueprint.Term(sign: .positive, factors: [mathEquationBlueprint.factor(topBase: "8", bottomBase: "1", squareRoot: false)])]
                 )
             case .solveOneStepMultiply:
-                // x = 6
                 return mathEquationBlueprint(
                     leftSide: [mathEquationBlueprint.Term(sign: .positive, factors: [mathEquationBlueprint.factor(topBase: "x", bottomBase: "1", squareRoot: false)])],
                     relation: .equal,
                     rightSide: [mathEquationBlueprint.Term(sign: .positive, factors: [mathEquationBlueprint.factor(topBase: "6", bottomBase: "1", squareRoot: false)])]
                 )
             case .solveTwoStep:
-                // x = 7
                 return mathEquationBlueprint(
                     leftSide: [mathEquationBlueprint.Term(sign: .positive, factors: [mathEquationBlueprint.factor(topBase: "x", bottomBase: "1", squareRoot: false)])],
                     relation: .equal,
                     rightSide: [mathEquationBlueprint.Term(sign: .positive, factors: [mathEquationBlueprint.factor(topBase: "7", bottomBase: "1", squareRoot: false)])]
                 )
             case .solveVariablesBothSides:
-                // x = 3
                 return mathEquationBlueprint(
                     leftSide: [mathEquationBlueprint.Term(sign: .positive, factors: [mathEquationBlueprint.factor(topBase: "x", bottomBase: "1", squareRoot: false)])],
                     relation: .equal,
                     rightSide: [mathEquationBlueprint.Term(sign: .positive, factors: [mathEquationBlueprint.factor(topBase: "3", bottomBase: "1", squareRoot: false)])]
                 )
             case .solveWithFraction:
-                // x = 15
                 return mathEquationBlueprint(
                     leftSide: [mathEquationBlueprint.Term(sign: .positive, factors: [mathEquationBlueprint.factor(topBase: "x", bottomBase: "1", squareRoot: false)])],
                     relation: .equal,

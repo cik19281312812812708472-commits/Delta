@@ -22,8 +22,8 @@ struct testView: View {
     var idealWhite: Color = Color(red: 245/255, green: 245/255, blue: 245/255)
     var idealBlack = Color(red: 11/255,green: 13/255, blue: 43/255)
     @State private var firstNow: DispatchTime = .now()
-    @State private var correctAnswerWaitingTime: Double = 0.0
-    @State private var waitingTimeTask: Task<Void, Never>?
+    @State var correctAnswerWaitingTime: Double = 0.0
+    @State var waitingTimeTask: Task<Void, Never>?
     
      func showCorrectAnswer() {
         isCorrectAnswerShown = true
@@ -83,9 +83,37 @@ struct testView: View {
                     .position(x: geo.size.width / 2, y: geo.size.height * 0.3)
                 
                 
-                
-                
-                
+                switch testManager.allQuestions[testManager.currentQuestionNumber].questionType {
+                    
+                case .math:
+                    //TODO: make a math equation builder
+                    TextField("Answer", text: $testManager.allQuestions[testManager.currentQuestionNumber].input)
+                        .frame(width: geo.size.width * 0.3)
+                        .onSubmit {
+                            showCorrectAnswer()
+                            testManager.changeQuestion(by: 1)
+                        }
+                        .position(x: geo.size.width * 0.5, y: geo.size.height * 0.6)
+                case .multipleChoice:
+                    
+                    //TODO: make multiple choice buttons.
+                    
+                    TextField("Answer", text: $testManager.allQuestions[testManager.currentQuestionNumber].input)
+                        .frame(width: geo.size.width * 0.3)
+                        .onSubmit {
+                            showCorrectAnswer()
+                            testManager.changeQuestion(by: 1)
+                        }
+                        .position(x: geo.size.width * 0.5, y: geo.size.height * 0.6)
+                case .text:
+                    TextField("Answer", text: $testManager.allQuestions[testManager.currentQuestionNumber].input)
+                        .frame(width: geo.size.width * 0.3)
+                        .onSubmit {
+                            showCorrectAnswer()
+                            testManager.changeQuestion(by: 1)
+                        }
+                        .position(x: geo.size.width * 0.5, y: geo.size.height * 0.6)
+                }
                 
                 
                 Button {
@@ -132,22 +160,6 @@ struct testView: View {
                 .frame(width: geo.size.width * 0.05, height: geo.size.height * 0.05)
                 .shadow(radius: 8)
                 .position(x: geo.size.width * 0.2, y: geo.size.height * 0.8)
-                
-                
-                
-                
-                TextField("Answer", text: $testManager.allQuestions[testManager.currentQuestionNumber].input)
-                    .frame(width: geo.size.width * 0.3)
-                    .onSubmit {
-                        showCorrectAnswer()
-                        testManager.changeQuestion(by: 1)
-                    }
-                    .position(x: geo.size.width * 0.5, y: geo.size.height * 0.6)
-                    
-                
-                
-                
-                
                 
                 Text("Question \(testManager.currentQuestionNumber + 1)")
                     .font(Font.largeTitle.bold())

@@ -85,7 +85,7 @@ struct PackageSelection: View {
                     
                     ForEach($testManager.allQuestions, id: \.id) { $uneQuestion in
                         
-                        TestQuestionButton(question: uneQuestion)
+                        TestQuestionButton(question: uneQuestion, oniOS: false, isShadowOff: false)
                             
                     }
                     
@@ -317,12 +317,12 @@ struct PackageSelection: View {
                    
                     Spacer()
                     
-                    ArchiveTestButton(geo: geo)
+                    ArchiveTestButton(geo: geo, oniOS: false)
                         .padding(20)
                     
                     Spacer()
                     
-                    LoadTestButton(geo: geo)
+                    LoadTestButton(geo: geo, oniOS: false)
                     
                 }
                 .frame(width: geo.size.width * 0.15, height: geo.size.height * 0.9)
@@ -334,8 +334,34 @@ struct PackageSelection: View {
                 .position(x: geo.size.width * 0.73, y: geo.size.height * 0.5)
                 
                 
-               
-               
+                Button {
+                    
+                    testManager.resetTest()
+                    
+                } label: {
+                    
+                    ZStack {
+                        
+                        Circle()
+                            .fill(colorScheme == .light ? .white.opacity(0.2) : generalData.idealBlack )
+                          //  .stroke(colorScheme == .light ? generalData.idealBlack.opacity(0.2) : .white, lineWidth: 0.1)
+                            .frame(width: geo.size.width * 0.015)
+                        
+                        Image(systemName: "arrow.trianglehead.2.clockwise.rotate.90")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: geo.size.width * 0.01225)
+                    }
+                    .hoverEffect(cornerRadius: geo.size.width * 0.0075)
+                    
+                }
+                .buttonStyle(.plain)
+                .shadow(color: generalData.getShadowColor().opacity(generalData.idealShadowOpacity), radius: 2.2)
+                .frame(width: geo.size.width * 0.015)
+                .position(x: geo.size.width * 0.37, y: geo.size.height * 0.025)
+                .contextMenu {
+                    Text("This button will reset the test. If you do not use this, when creating a new test, the app will treat the test like the same one.")
+                }
                 
                 
                 

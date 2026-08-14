@@ -11,6 +11,7 @@ import SwiftUI
 import Combine
 
 class EuclideanGeo: Package {
+    
     func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
         createQuestion()
     }
@@ -51,22 +52,22 @@ class EuclideanGeo: Package {
     
     
    
-    @Published var allChangbleBools: [boolSetting] = []
+     var allChangbleBools: [boolSetting] = []
     
-    @Published var allChangbleInts: [intSetting] = []
+     var allChangbleInts: [intSetting] = []
     
-    @Published var allChangbleDoubles: [doubleSetting] = [doubleSetting(double: 0.0, name: "stuff")]
+     var allChangbleDoubles: [doubleSetting] = [doubleSetting(double: 0.0, name: "stuff")]
     
     
     var packageType: PackageTypes = .mathPackage
     
-    let publicName: String = "Euclidean Geometry"
+    var publicName: String = "Euclidean Geometry"
     
-    let internalName: String = "euclideanGeometry"
+    var internalName: String = "euclideanGeometry"
     
     var packageDescription: String = "This package is not finnished"
     
-    let id = UUID()
+    var id = UUID()
     
      
     

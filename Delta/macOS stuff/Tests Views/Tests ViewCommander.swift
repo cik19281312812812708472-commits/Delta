@@ -25,6 +25,8 @@ struct testsViewCommander: View {
             testView()
         case .testEnded:
             TestStats()
+        case .previewQuestions:
+            Text("")
         }
         
         

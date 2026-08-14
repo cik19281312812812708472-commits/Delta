@@ -8,8 +8,8 @@
 import SwiftUI
 
 extension View {
-    func hoverEffect(_ isHovering: Binding<Bool>? = nil, width: CGFloat? = nil, height: CGFloat? = nil, cornerRadius: Double = 0) -> some View {
-        self.modifier(HoverViewModifier(isHovering: isHovering, cornerRadius: cornerRadius, width: width, height: height))
+    func hoverEffect(_ isHovering: Binding<Bool>? = nil, width: CGFloat? = nil, height: CGFloat? = nil, cornerRadius: Double = 0, color: Color = .white, darkColor: Color? = Color(red: 11/255, green: 11/255, blue: 17/255), darkOpacity: Double = 0.1, opacity: Double = 0.3) -> some View {
+        self.modifier(HoverViewModifier(isHovering: isHovering, cornerRadius: cornerRadius, width: width, height: height,color: color, darkColor: darkColor, darkOpacity: darkOpacity, opacity: opacity))
     }
 }
 
@@ -18,6 +18,7 @@ struct HoverViewModifier: ViewModifier {
     
     @State private var isHovering: Bool = false
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.self) var envirionment
     
     @Binding var isHoveringState: Bool
     
@@ -25,8 +26,12 @@ struct HoverViewModifier: ViewModifier {
     var cornerRadius: Double
     var width: CGFloat?
     var height: CGFloat?
+    var color: Color
+    var darkColor: Color
+    var opacity: Double
+    var darkOpacity: Double
     
-    init(isHovering: Binding<Bool>? = nil, cornerRadius: Double, width: CGFloat? = nil, height: CGFloat? = nil) {
+    init(isHovering: Binding<Bool>? = nil, cornerRadius: Double, width: CGFloat? = nil, height: CGFloat? = nil, color: Color, darkColor: Color?, darkOpacity: Double, opacity: Double) {
         
         if isHovering == nil {
             controllingHovering = true
@@ -37,8 +42,29 @@ struct HoverViewModifier: ViewModifier {
         self.cornerRadius = cornerRadius
         self.width = width
         self.height = height
+        self.color = color
+        self.opacity = opacity
+        self.darkColor = .black
+        self.darkOpacity = darkOpacity
+        
+        if darkColor == nil {
+            let resolvedColor = color.resolve(in: envirionment)
+            
+            let trueDarkColor = Color(red: abs(Double(resolvedColor.red) - 1), green:  abs(Double(resolvedColor.green) - 1), blue: abs(Double(resolvedColor.blue) - 1))
+            
+            self.darkColor = trueDarkColor
+            
+        } else {
+            self.darkColor = darkColor!
+        }
+        
+        
+        
        
     }
+    
+    
+    
     
     func body(content: Content) -> some View {
         content
@@ -49,7 +75,7 @@ struct HoverViewModifier: ViewModifier {
                     .fill (
                 isHovering ?
                 
-                colorScheme == .light ? .white.opacity(0.3) : Color(red: 11/255, green: 11/255, blue: 17/255).opacity(0.1)
+                colorScheme == .light ? color.opacity(opacity) : darkColor.opacity(darkOpacity)
                 
                 : .clear
                 )

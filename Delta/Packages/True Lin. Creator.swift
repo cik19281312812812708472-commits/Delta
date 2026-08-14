@@ -16,9 +16,40 @@ class LinearSystemCreator: Package, ObservableObject {
     
     
     func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
-        createQuestion()
         
+        var answer = descriptionOfQuestion.questionAnswer
+        
+        let equations = descriptionOfQuestion.extraDescription.split(separator: "|")
+        let equationViewed = equations[0] != "" ? equations[0] : "nil"
+        let equation2Viewed = equations[1] != "" ? equations[1] : "nil"
+        
+        let questionContent = QuestionContent { AnyView (
+            
+            VStack {
+                
+                Text(equationViewed)
+                    .font(.title3)
+                Text(equation2Viewed)
+                    .font(.title3)
+                    .padding(25)
+                
+                Text("Answer like: x = ?, y = ?")
+                
+            }
+        
+        )}
+        //MARK: Add omitting of questions with 0 in it
+        //wdym?
+        
+        if equationViewed == "nil" || equation2Viewed == "nil" {
+            answer = ""
+        }
+        
+        let finalQuestion = Question(creator: self.id, questionName: "", questionText: "Solve the linear system:", questionContent: questionContent, questionContentSizeX: 500, questionContentSizeY: 500, questionAnswer: answer)
+        
+        return finalQuestion
     }
+    
     
     var packageType: PackageTypes = .mathPackage
     
@@ -225,7 +256,7 @@ class LinearSystemCreator: Package, ObservableObject {
         
         finalQuestion = Question(creator: self.id, questionName: "", questionText: "Solve the linear system:", questionContent: questionContent, questionContentSizeX: 500, questionContentSizeY: 500, questionAnswer: answer)
         
-        
+        finalQuestion.questionDescription = "\(equationViewed)|\(equation2Viewed)"
         
         guard equation["equalsTo"]!.isNaN == false && equation2["equalsTo"]!.isNaN == false else {
             

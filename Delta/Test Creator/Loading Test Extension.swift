@@ -104,7 +104,7 @@ extension TestManager {
         
     }
     
-    ///This function sets the apps test data to "loadedTest"'s test data
+    ///This function sets the apps current test data to "loadedTest"'s test data. so the loaded tests is saved in a seperate variable. this function actual sets the vars from tthat var.
      func loadTest() {
         
         if let test: Test = self.loadedTest {

@@ -30,11 +30,11 @@ struct QuestionInfo: View {
             ZStack {
                 Circle()
                     .fill(.ultraThinMaterial)
-                    .frame(width: geo.size.width * 0.025, height: geo.size.width * 0.025)
+                    .frame(width: geo.size.width * 0.02, height: geo.size.width * 0.02)
                 
                 Circle()
                     .fill(Color.accentColor.opacity(0.3))
-                    .frame(width: geo.size.width * 0.025, height: geo.size.width * 0.025)
+                    .frame(width: geo.size.width * 0.02, height: geo.size.width * 0.02)
                     .shadow(color: .accentColor.opacity(0.7), radius: 8, x: 1, y: 1)
                 
                 Image(systemName:  "questionmark")

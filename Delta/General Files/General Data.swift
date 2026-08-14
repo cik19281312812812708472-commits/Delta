@@ -20,6 +20,8 @@ class GeneralData: ObservableObject {
     
     @Published var idealButtonLineWidth: Double = 1.5
     
+    var oniOS: Bool = false
+    
     func getWhite(_ shade: Double) -> Color {
         
         let white = Color(red: shade/255, green: shade/255, blue: shade/255)
@@ -38,7 +40,27 @@ class GeneralData: ObservableObject {
         return colorScheme == .light ? idealBlack : getWhite(100)
     }
     
-   
+    init() {
+        
+    #if os(iOS)
+        oniOS = true
+    #endif
+        
+    }
+    
+}
+
+extension GeneralData {
+    
+    struct iOSDivider: View {
+        var body: some View {
+            
+            
+            Divider()
+                .background(Color.black.opacity(0.1))
+                .padding(.horizontal, 10)
+        }
+    }
     
 }
 

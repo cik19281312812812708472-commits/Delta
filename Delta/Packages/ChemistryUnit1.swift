@@ -10,21 +10,46 @@ import Foundation
 import Combine
 import TestCreation
 
-class ChemistryUnit1: Package, ObservableObject {
+class ChemistryUnit1: Package, ObservableObject, Codable {
+    
+    // MARK: - Coding Keys
+    private enum CodingKeys: String, CodingKey {
+        case publicName
+        case internalName
+        case packageDescription
+        case id
+        case allChangbleBools
+        case numberOfQuestionsMadePerSection
+        case allChangbleInts
+        case allChangbleDoubles
+        case randomizeQuestions
+        case generatedAllCases
+        case questionNum
+    }
+    
+    // MARK: - Save / Load Question
     func saveQuestion(question: TestCreation.Question) -> TestCreation.DescriptionOfQuestion {
-        DescriptionOfQuestion(ownerInternalName: internalName, question: question)
+        DescriptionOfQuestion(
+            ownerInternalName: internalName,
+            question: question,
+            questionIndex: self.questionNum
+        )
     }
+    
     func loadQuestion(descriptionOfQuestion: TestCreation.DescriptionOfQuestion) -> TestCreation.Question {
-        createQuestion()
+        // Find matching case by ID or by text content
+        if let matchingCase = allQuestions.allCases.first(where: { $0.id == descriptionOfQuestion.questionName || $0.questionWords == descriptionOfQuestion.questionText }) {
+            return buildQuestion(from: matchingCase)
+        }
+        
+        // Fallback
+        return createQuestion()
     }
     
-    
+    // MARK: - Package Properties
     var packageType: PackageTypes = .sciencePackage
-    
     var publicName: String = "SNC1W Chemistry Unit"
-    
     var internalName: String = "chemistryUnit1"
-    
     var packageDescription: String = """
     This package covers the SNC1W/SNC1WE Grade 9 Chemistry Unit, including particle theory, physical/chemical properties, density math, the periodic table, Bohr-Rutherford/Lewis models, periodic trends, and ionic/covalent compounds.
     
@@ -35,19 +60,52 @@ class ChemistryUnit1: Package, ObservableObject {
     var id = UUID()
     
     @Published var allChangbleBools: [boolSetting] = [boolSetting(bool: false, name: "Randomize questions?")]
-    
     @Published var numberOfQuestionsMadePerSection: Int = 30
-    
     @Published var allChangbleInts: [intSetting] = [intSetting(int: 30, name: "Number of questions per section")]
-    
     @Published var allChangbleDoubles: [doubleSetting] = []
   
-    // Track the actual enum cases instead of lightQuestion structs so we keep the views attached
+    // Runtime State Tracking
     var shuffledCases: [allQuestions] = []
     var randomizeQuestions: Bool = false
     var generatedAllCases: Bool = false
     var questionNum: Int = 0
     
+    // MARK: - Initializers & Codable Protocol
+    public init() {}
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.publicName = try container.decode(String.self, forKey: .publicName)
+        self.internalName = try container.decode(String.self, forKey: .internalName)
+        self.packageDescription = try container.decode(String.self, forKey: .packageDescription)
+        self.id = try container.decode(UUID.self, forKey: .id)
+        self.allChangbleBools = try container.decode([boolSetting].self, forKey: .allChangbleBools)
+        self.numberOfQuestionsMadePerSection = try container.decode(Int.self, forKey: .numberOfQuestionsMadePerSection)
+        self.allChangbleInts = try container.decode([intSetting].self, forKey: .allChangbleInts)
+        self.allChangbleDoubles = try container.decode([doubleSetting].self, forKey: .allChangbleDoubles)
+        self.randomizeQuestions = try container.decode(Bool.self, forKey: .randomizeQuestions)
+        self.generatedAllCases = try container.decode(Bool.self, forKey: .generatedAllCases)
+        self.questionNum = try container.decode(Int.self, forKey: .questionNum)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(publicName, forKey: .publicName)
+        try container.encode(internalName, forKey: .internalName)
+        try container.encode(packageDescription, forKey: .packageDescription)
+        try container.encode(id, forKey: .id)
+        try container.encode(allChangbleBools, forKey: .allChangbleBools)
+        try container.encode(numberOfQuestionsMadePerSection, forKey: .numberOfQuestionsMadePerSection)
+        try container.encode(allChangbleInts, forKey: .allChangbleInts)
+        try container.encode(allChangbleDoubles, forKey: .allChangbleDoubles)
+        try container.encode(randomizeQuestions, forKey: .randomizeQuestions)
+        try container.encode(generatedAllCases, forKey: .generatedAllCases)
+        try container.encode(questionNum, forKey: .questionNum)
+    }
+    
+    // MARK: - Settings & Logic
     func updateInternalSettings() {
         numberOfQuestionsMadePerSection = allChangbleInts[0].int
         randomizeQuestions = allChangbleBools[0].bool
@@ -64,7 +122,6 @@ class ChemistryUnit1: Package, ObservableObject {
         return allQuestionsMade
     }
     
-    // Safely loads and shuffles the underlying enum cases
     func loadAllCases() -> [allQuestions] {
         if !generatedAllCases {
             shuffledCases = allQuestions.allCases
@@ -74,14 +131,12 @@ class ChemistryUnit1: Package, ObservableObject {
         if randomizeQuestions {
             shuffledCases.shuffle()
         } else {
-            // Reset to default compiler order if randomization is turned off
             shuffledCases = allQuestions.allCases
         }
         
         return shuffledCases
     }
     
-    // Fallback array loader required by your package protocols
     func loadAllQuestions() -> [lightQuestion] {
         var allQuestionsLoaded: [lightQuestion] = []
         for question in allQuestions.allCases {
@@ -101,28 +156,31 @@ class ChemistryUnit1: Package, ObservableObject {
             self.questionNum = 0
         }
         
-        // 1. Grab the current case from our tracking array
         let currentCase = cases[questionNum]
-        
-        // 2. Create the real Question object directly from the enum case properties
-        let trueQuestion = Question(
-            creator: self.id, questionName: "",
-            questionText: currentCase.questionWords,
-            questionContent: currentCase.questionContent, // Injects the custom layout perfectly!
-            questionContentSizeX: 500,
-            questionContentSizeY: 500,
-            questionAnswer: currentCase.answer
-        )
+        let trueQuestion = buildQuestion(from: currentCase)
         
         self.questionNum += 1
         return trueQuestion
+    }
+    
+    private func buildQuestion(from questionCase: allQuestions) -> TestCreation.Question {
+        return Question(
+            creator: self.id,
+            questionName: questionCase.id,
+            questionText: questionCase.questionWords,
+            questionContent: questionCase.questionContent,
+            questionContentSizeX: 500,
+            questionContentSizeY: 500,
+            questionAnswer: questionCase.answer
+        )
     }
     
     func filterAnswer(answer: String) -> String {
         return answer.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
-    enum allQuestions: CaseIterable {
+    // MARK: - Questions Enum
+    enum allQuestions: String, CaseIterable {
         // MARK: - Matter & Particle Theory
         case whatAreAtomsMadeOf
         case whatIsEverythingMadeOf
@@ -250,6 +308,8 @@ class ChemistryUnit1: Package, ObservableObject {
         
         // MARK: - Gas Tests
         case gasTestsList
+
+        var id: String { self.rawValue }
 
         var questionWords: String {
             switch self {
@@ -677,7 +737,7 @@ class ChemistryUnit1: Package, ObservableObject {
             case .reactivityTrend:
                 return "Metals: Reactivity increases down a group and left across a period (easier to lose electrons). Non-metals: Reactivity increases up a group and right across a period (easier to pull electrons in)."
             case .gasTestsList:
-                return "Hydrogen: Bring a burning splint near the gas; it will make a distinctive 'pop' sound. Oxygen: Bring a glowing splint into the gas; the splint will reignite into a flame. Carbon Dioxide: Bubble the gas into limewater; the liquid turns cloudy/milky, or it will extinguish a burning splint."
+                return "Describe the gas tests for Hydrogen (H2), Oxygen (O2), and Carbon Dioxide (CO2)."
             }
         }
         

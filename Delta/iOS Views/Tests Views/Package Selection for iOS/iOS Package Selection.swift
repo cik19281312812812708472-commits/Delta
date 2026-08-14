@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import TestCreation
 
 
 
 struct iOSPackageSelection: View {
+    
+    
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
     
     @EnvironmentObject var generalData: GeneralData
     @EnvironmentObject var testManager: TestManager
@@ -41,7 +45,7 @@ struct iOSPackageSelection: View {
                 ScrollView {
                     
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(generalData.idealBlack)
+                        .fill(colorScheme == .light ? generalData.idealBlack : generalData.getWhite(245))
                         .frame(width: geo.size.width * 0.98, height: geo.size.height * 0.002)
                         .frame(maxWidth: .infinity)
                     
@@ -52,12 +56,21 @@ struct iOSPackageSelection: View {
                            
                     }
                     
+                    Color.clear
+                        .padding(5)
+                    
+                }
+                .refreshable {
+                    
+                    withAnimation(.smooth) {
+                        appState.allPackages = appState.allPackages.sorted { $0.publicName < $1.publicName }
+                    }
                 }
                 .offset(y: geo.size.height * 0.05)
                
                 
             }
-            
+           
             
         }
         

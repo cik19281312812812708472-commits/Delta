@@ -12,21 +12,40 @@ extension TestManager {
     
     func iOSSetUp() {
         
-        loadLastTest()
+        let testName = loadLastTestName()
         
-        if !packagesSelected.isEmpty && !allQuestions.isEmpty {
-            startTest()
+        if testName != nil {
+            
+            
+            //print(testName)
+            appManager.appState = .startingScreen
+            
+            loadTestData(name: testName!)
+            loadTest()
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+                if !self.packagesSelected.isEmpty && !self.allQuestions.isEmpty {
+                    
+                    self.appManager.appState = .Tests
+                    self.startTest()
+                    
+                } else {
+                    self.appManager.appState = .Tests
+                    self.appManager.testState = .selectingPackages
+                }
+            }
+            
         } else {
+            appManager.appState = .Tests
             appManager.testState = .selectingPackages
         }
-        
         
         
         
     }
     
     
-    private func loadLastTest() {
+    private func loadLastTestName() -> String? {
        
         var lastTestName: String? = nil
         
@@ -57,12 +76,9 @@ extension TestManager {
             //fatalError("Failed to load the stuff in files")
         }
         
-        if lastTestName != nil {
-            loadTestData(name: lastTestName!)
-            loadTest()
-        }
+       
         
-        
+        return lastTestName
     }
     
     

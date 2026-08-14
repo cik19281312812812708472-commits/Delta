@@ -103,7 +103,7 @@ struct PackageButton: View {
                     }
                     
                 }
-                .hoverEffect(cornerRadius: 10)
+                .hoverEffect(cornerRadius: 10, darkOpacity: oniOS ? 0.0 : 0.3, opacity: oniOS ? 0.0 : 0.3)
                 .frame(
                     width: oniOS == false ?
                         geo.size.width * 0.1
@@ -121,14 +121,22 @@ struct PackageButton: View {
             .buttonStyle(.plain)
             .contextMenu {
                 
+                
+                
                 HStack {
-                    Button("See Settings") {
+                    
+                    Button {
                         isSettingsShown.toggle()
+                    } label: {
+                        Label("Settings", systemImage: "gearshape.fill")
                     }
                     
-                    Button("See Description") {
+                    Button {
                         isDescriptionShown.toggle()
+                    } label: {
+                        Label("Description", systemImage: "text.alignleft")
                     }
+                    
                 }
             
             }
@@ -190,7 +198,7 @@ struct PackageButton: View {
                     Image(systemName: "pi")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: oniOS == false ? geo.size.width * 0.018 : geo.size.width * 0.07, height: oniOS == false ? geo.size.height * 0.018 : geo.size.width * 0.07)
+                        .frame(width: oniOS == false ? geo.size.width * 0.017 : geo.size.width * 0.07, height: oniOS == false ? geo.size.height * 0.017 : geo.size.width * 0.07)
                 case .languagePackage:
                     Image(systemName: "bubble.left.and.text.bubble.right.fill")
                         .resizable()

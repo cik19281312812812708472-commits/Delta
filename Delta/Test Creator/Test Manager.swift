@@ -14,6 +14,9 @@ import Combine
 import TestCreation
 
 //MARK: ADD QUESTION TYPE ID
+// idk what that means
+
+//MARK: PUT THIS ALL INTO different files.
  class TestManager: ObservableObject {
     
      @Published var packagesSelected: [UUID] = []
@@ -22,6 +25,11 @@ import TestCreation
      
      
      @Published var testName: String = "Blank Test"
+     
+     ///This variable should only be nil if theurl originates from the application folder if it is outside that then it shouldn't be nil
+     ///
+     ///It saves the location of the test file, for external test save locations, so they can be resaved.
+     @Published var testURLOrigin: URL? = nil
      
      @Published var allQuestions: [Question] = []
      
@@ -72,7 +80,21 @@ import TestCreation
     
      
     
-     
+     func resetTest() {
+         
+        
+         wipeTestData()
+         
+         testName = "Blank Test"
+         packagesSelected = []
+         testURLOrigin = nil
+         
+         if savedTest {
+             //so that when the app is gone the test is saved.
+             setLastTestName()
+         }
+         savedTest = false
+     }
     
      
      
@@ -101,11 +123,10 @@ import TestCreation
              
              allQuestions.removeAll() {
                  
+                 $0.questionName == question.questionName &&
                  $0.questionText == question.questionText &&
-                 $0.questionType == question.questionType &&
-                 $0.questionContentSizeX == question.questionContentSizeX &&
-                 $0.questionContentSizeY == question.questionContentSizeY
-                
+                 $0.questionType == question.questionType
+                 
              }
              
          } else {
@@ -132,7 +153,7 @@ import TestCreation
             
             let section: [Question] = actualPackagesSelected[i].createSection(numOfQuestions: 10)
             
-            tempAllQuestions += section
+            tempAllQuestions.append(contentsOf: section)
             
         }
         
@@ -152,7 +173,11 @@ import TestCreation
         stashOfAllQuestions = allQuestions
         stashOfAllQuestionsMarks = allQuestions.map {_ in 0}
         
+        #if os(macOS)
+        
         currentQuestionNumber = 0
+        #endif
+        
         currentQuestion = allQuestions[currentQuestionNumber]
         
         appManager.testState = .runningTest

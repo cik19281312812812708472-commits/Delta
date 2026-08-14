@@ -5,6 +5,10 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeIconFile</key>
+			<string></string>
+			<key>CFBundleTypeIconSystemGenerated</key>
+			<true/>
 			<key>CFBundleTypeName</key>
 			<string>A saved Delta Test</string>
 			<key>CFBundleTypeRole</key>
@@ -16,6 +20,7 @@
 				<string>com.techdicto.Delta.savedTest</string>
 			</array>
 		</dict>
+		<dict/>
 	</array>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
@@ -27,7 +32,10 @@
 			<key>UTTypeDescription</key>
 			<string>A saved Delta Test</string>
 			<key>UTTypeIcons</key>
-			<dict/>
+			<dict>
+				<key>UTTypeIconBadgeName</key>
+				<string>AppIcon</string>
+			</dict>
 			<key>UTTypeIdentifier</key>
 			<string>com.techdicto.Delta.savedTest</string>
 			<key>UTTypeTagSpecification</key>

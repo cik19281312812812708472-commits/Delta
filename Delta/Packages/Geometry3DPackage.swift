@@ -16,15 +16,15 @@ class Geometry3DPackage: Package {
     
     var packageType: PackageTypes = .mathPackage
     
-    let publicName = "3D Geometry: Volume & Surface Area"
-    let internalName = "com.geometry.volume.surfacearea"
-    @Published var packageDescription = "Generates procedural questions regarding the volume and surface area of cylinders, cones, and spheres."
-    let id = UUID()
+    var publicName = "3D Geometry: Volume & Surface Area"
+    var internalName = "com.geometry.volume.surfacearea"
+    var packageDescription = "Generates procedural questions regarding the volume and surface area of cylinders, cones, and spheres."
+    var id = UUID()
     
     // Configurable Settings using your app's types
-    @Published var allChangbleBools: [boolSetting] = []
-    @Published var allChangbleInts: [intSetting] = []
-    @Published var allChangbleDoubles: [doubleSetting] = []
+     var allChangbleBools: [boolSetting] = []
+     var allChangbleInts: [intSetting] = []
+     var allChangbleDoubles: [doubleSetting] = []
     
     // Internal state tracking
     private var testCylinders: Bool = true
